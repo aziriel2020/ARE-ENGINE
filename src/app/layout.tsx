@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
+import { ToastProvider } from '@/components/ui/toast-provider';
 
 export const metadata: Metadata = {
   title: 'ARE-E — Artist Reality Engine',
@@ -13,24 +15,20 @@ export const metadata: Metadata = {
     locale: 'en_US',
     siteName: 'ARE-E',
     title: 'ARE-E — Artist Reality Engine',
-    description:
-      'Your lyrics sound like you. Finally.',
+    description: 'Your lyrics sound like you. Finally.',
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="bg-[#000000]">
-      <head>
-        {/* Fonts loaded via globals.css @import */}
-      </head>
-      <body className="min-h-screen bg-[#000000] text-[#E8E8E8] font-body antialiased">
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="bg-[#000000]">
+        <head />
+        <body className="min-h-screen bg-[#000000] text-[#E8E8E8] font-body antialiased">
+          <ToastProvider />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
