@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Use "sqlite" locally (DATABASE_URL=file:./dev.db) and "postgresql" in production.
+  // Switch provider when deploying to Supabase.
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+  STUDIO
+  ENTERPRISE
+}
+
+enum BlueprintStatus {
+  GENERATING
+  SCORING
+  REGENERATING
+  COMPLETE
+  FAILED
+}
+
+enum BlueprintGrade {
+  S
+  A
+  B
+  C
+  F
+}
+
+enum WebhookEventType {
+  BLUEPRINT_COMPLETED
+  BLUEPRINT_FAILED
+  QUOTA_WARNING
+  QUOTA_EXCEEDED
+  DNA_UPDATED
+}
+
+model User {
+  id                   String    @id // Clerk user ID
+  email                String    @unique
+  orgId                String? // Clerk org ID (for enterprise)
+  plan                 Plan      @default(FREE)
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?
+  trialEndsAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  deletedAt            DateTime? // soft delete for GDPR
+
+  blueprints       Blueprint[]
+  dnaProfiles      VocalDNAProfile[]
+  apiKeys          ApiKey[]
+  usageRecords     UsageRecord[]
+  auditLogs        AuditLog[]
+  webhookEndpoints WebhookEndpoint[]
+
+  @@index([orgId])
+  @@index([stripeCustomerId])
+}
+
+model VocalDNAProfile {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  name      String // "JCAY Main", "JCAY Melancholic Mode"
+  version   Int      @default(1)
+  dna       Json // VocalDNA Zod-validated JSONB
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  blueprints Blueprint[]
+
+  @@unique([userId, name, version])
+  @@index([userId])
+}
+
+model Blueprint {
+  id           String          @id @default(cuid())
+  userId       String
+  user         User            @relation(fields: [userId], references: [id])
+  dnaProfileId String?
+  dnaProfile   VocalDNAProfile? @relation(fields: [dnaProfileId], references: [id])
+
+  title           String
+  userPrompt      String // original request
+  intent          Json // DecomposedIntent
+  content         String // full blueprint text (latest version)
+  productionNotes String?
+  sunoPrompt      String?
+
+  status BlueprintStatus @default(GENERATING)
+  grade  BlueprintGrade?
+
+  qualityReport     Json? // QualityReport
+  regenerationCount Int   @default(0)
+
+  // Cost tracking
+  modelUsed    String // e.g. "gemini-3.1-pro-preview"
+  inputTokens  Int    @default(0)
+  outputTokens Int    @default(0)
+  totalCostUsd Float  @default(0)
+  cachedTokens Int    @default(0)
+
+  // Versioning
+  version  Int        @default(1)
+  parentId String? // previous version
+  parent   Blueprint? @relation("BlueprintVersions", fields: [parentId], references: [id])
+  children Blueprint[] @relation("BlueprintVersions")
+
+  // User feedback
+  rating   Int? // 1-5 stars (SmallInt in PostgreSQL — use @db.SmallInt when switching to pg)
+  feedback String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([dnaProfileId])
+  @@index([createdAt])
+  @@index([grade])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  name        String
+  keyHash     String    @unique // SHA-256 of the actual key
+  keyPrefix   String // first 8 chars for display: "are_k_ab..."
+  // Stored as JSON-serialized string array (SQLite compat); use String[] in PostgreSQL
+  permissions String  @default("[\"generate\",\"blueprints:read\"]")
+  ipWhitelist String  @default("[]")
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  @@index([keyHash])
+  @@index([userId])
+}
+
+model UsageRecord {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  period           String // "2026-04" (YYYY-MM)
+  generationsUsed  Int      @default(0)
+  generationsLimit Int // based on plan
+  tokensConsumed   Int      @default(0)
+  costUsd          Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([userId, period])
+  @@index([userId, period])
+}
+
+model WebhookEndpoint {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  url             String
+  secret          String // HMAC secret for signature verification
+  // Stored as JSON-serialized string array (SQLite compat); use WebhookEventType[] in PostgreSQL
+  events          String           @default("[]")
+  isActive        Boolean          @default(true)
+  failureCount    Int              @default(0)
+  lastDeliveredAt DateTime?
+  createdAt       DateTime         @default(now())
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String // "blueprint.created", "api_key.rotated", "plan.upgraded"
+  metadata  Json? // action-specific data
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model WebhookDelivery {
+  id          String           @id @default(cuid())
+  endpointId  String
+  eventType   WebhookEventType
+  payload     Json
+  statusCode  Int?
+  responseBody String?
+  attempt     Int              @default(1)
+  deliveredAt DateTime?
+  nextRetryAt DateTime?
+  createdAt   DateTime         @default(now())
+
+  @@index([endpointId])
+  @@index([nextRetryAt])
+}

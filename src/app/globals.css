@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── VOID PROTOCOL DESIGN SYSTEM ─────────────────────────────────────────── */
+
+:root {
+  /* Core backgrounds */
+  --bg-void:        #000000;
+  --bg-elevated:    #0A0A0A;
+  --bg-surface:     #111111;
+  --bg-hover:       #1A1A1A;
+  --bg-active:      #222222;
+
+  /* Text */
+  --text-primary:   #E8E8E8;
+  --text-secondary: #888888;
+  --text-tertiary:  #555555;
+  --text-ghost:     #333333;
+
+  /* Accent — chartreuse green */
+  --accent:         #C8FF00;
+  --accent-dim:     #C8FF0033;
+  --accent-hover:   #D4FF33;
+
+  /* Semantic */
+  --success:        #00FF88;
+  --warning:        #FFB800;
+  --error:          #FF3366;
+  --info:           #00BBFF;
+
+  /* Borders */
+  --border:         #1A1A1A;
+  --border-hover:   #333333;
+  --border-accent:  #C8FF0066;
+
+  /* Spacing scale */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+}
+
+/* ── BASE RESET ────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── TYPOGRAPHY ────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+code, pre, .font-mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ── SELECTION ─────────────────────────────────────────────────────────────── */
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--text-primary);
+}
+
+/* ── FOCUS ─────────────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── LINKS ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── SPINNER GLYPH ─────────────────────────────────────────────────────────── */
+
+@keyframes spin-glyph {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin-glyph {
+  display: inline-block;
+  animation: spin-glyph 1s linear infinite;
+}
+
+/* ── FADE IN UP ────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 200ms ease-out both;
+}
+
+/* ── TERMINAL CURSOR ───────────────────────────────────────────────────────── */
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '▌';
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+  margin-left: 1px;
+}
+
+/* ── COMPONENT UTILITIES ───────────────────────────────────────────────────── */
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium transition-colors duration-150;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-hover);
+  }
+
+  .btn:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000000;
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+
+  .btn-ghost {
+    @apply btn;
+    border-color: transparent;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--border);
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full text-sm px-0 py-2 bg-transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+
+  .input:focus {
+    border-bottom-color: var(--accent);
+  }
+
+  .input::placeholder {
+    color: var(--text-ghost);
+  }
+
+  /* Cards */
+  .card {
+    @apply p-4;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 150ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+  }
+
+  /* Tables */
+  .table-header {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .table-row {
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Grade badges */
+  .grade-s { color: var(--accent); }
+  .grade-a { color: var(--success); }
+  .grade-b { color: var(--info); }
+  .grade-c { color: var(--warning); }
+  .grade-f { color: var(--error); }
+
+  /* Status badges */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 text-xs font-mono;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    opacity: 0.9;
+  }
+
+  /* Dividers */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* ── UTILITIES ──────────────────────────────────────────────────────────────── */
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .font-heading { font-family: 'Space Mono', monospace; }
+  .font-code    { font-family: 'IBM Plex Mono', monospace; }
+  .font-body    { font-family: 'DM Sans', sans-serif; }
+
+  .text-accent    { color: var(--accent); }
+  .text-success   { color: var(--success); }
+  .text-warning   { color: var(--warning); }
+  .text-error     { color: var(--error); }
+  .text-info      { color: var(--info); }
+  .text-primary   { color: var(--text-primary); }
+  .text-secondary { color: var(--text-secondary); }
+  .text-tertiary  { color: var(--text-tertiary); }
+  .text-ghost     { color: var(--text-ghost); }
+
+  .bg-void     { background: var(--bg-void); }
+  .bg-elevated { background: var(--bg-elevated); }
+  .bg-surface  { background: var(--bg-surface); }
+
+  .border-default { border-color: var(--border); }
+  .border-accent  { border-color: var(--accent); }
+}
