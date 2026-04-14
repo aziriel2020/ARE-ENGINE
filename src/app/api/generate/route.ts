@@ -79,6 +79,13 @@ export async function POST(request: NextRequest) {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(chunk)}\n\n`));
       };
 
+      // Keep-alive: send SSE comment every 8 s so proxies/clients don't close
+      // the connection during silent pipeline stages (scoring, re-generation).
+      const heartbeat = setInterval(() => {
+        try { controller.enqueue(encoder.encode(': heartbeat\n\n')); }
+        catch { /* stream already closed */ }
+      }, 8000);
+
       try {
         const result = await runPipeline(
           { userId: authCtx.userId, blueprintId: String(blueprintId), dnaProfileId, dna, userPrompt: prompt },
@@ -109,7 +116,7 @@ export async function POST(request: NextRequest) {
           await incrementGenerationCount(authCtx.userId, authCtx.plan);
         }
 
-        send({ section: 'complete', content: JSON.stringify({ blueprintId, grade: result.qualityReport.grade }) });
+        send({ section: 'complete', content: JSON.stringify({ blueprintId, qualityReport: result.qualityReport }) });
         void auditLog(authCtx.userId, 'blueprint.generation_completed', request, { blueprintId, grade: result.qualityReport.grade });
       } catch (err) {
         logError('generate: pipeline error', { userId: authCtx.userId, metadata: { error: String(err) } });
@@ -121,6 +128,7 @@ export async function POST(request: NextRequest) {
           }).catch(() => {/* non-critical */});
         }
       } finally {
+        clearInterval(heartbeat);
         controller.close();
       }
     },

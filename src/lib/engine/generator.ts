@@ -258,8 +258,6 @@ export async function runPipeline(
     modelUsed,
   } = await generateBlueprintStream(intent, ctx, onChunk);
 
-  onChunk({ section: 'complete', content: '' });
-
   const { content, productionNotes, sunoPrompt } = parseBlueprintSections(rawContent);
 
   // Stage 3

@@ -96,23 +96,26 @@ export default function StudioPage() {
             const raw = line.slice(6).trim();
             if (!raw || raw === '[DONE]') continue;
 
-            try {
-              const chunk = JSON.parse(raw) as SseChunk;
-              if (chunk.section === '__status__') {
-                addStatus(chunk.content);
-              } else if (chunk.section === '__complete__') {
-                const final = JSON.parse(chunk.content) as GenerateResponse;
-                if (final.blueprintId) setBlueprintId(final.blueprintId);
-                if (final.qualityReport) {
-                  setReport(final.qualityReport);
-                  addStatus(`◈ Quality grade: ${final.qualityReport.grade} (${final.qualityReport.aggregateScore}/100)`);
-                }
-              } else {
-                setSections((prev) => ({ ...prev, [chunk.section]: (prev[chunk.section] ?? '') + chunk.content }));
-                setSectionOrder((prev) => prev.includes(chunk.section) ? prev : [...prev, chunk.section]);
+            let chunk: SseChunk | null = null;
+            try { chunk = JSON.parse(raw) as SseChunk; } catch { /* ignore */ }
+            if (!chunk) continue; // malformed JSON — skip line
+
+            if (chunk.section === 'error') {
+              throw new Error(chunk.content || 'Generation failed');
+            } else if (chunk.section === 'complete') {
+              if (chunk.content) {
+                try {
+                  const final = JSON.parse(chunk.content) as GenerateResponse;
+                  if (final.blueprintId) setBlueprintId(final.blueprintId);
+                  if (final.qualityReport) {
+                    setReport(final.qualityReport);
+                    addStatus(`◈ Quality grade: ${final.qualityReport.grade} (${final.qualityReport.aggregateScore}/100)`);
+                  }
+                } catch { /* ignore malformed complete payload */ }
               }
-            } catch {
-              // malformed chunk — skip
+            } else {
+              setSections((prev) => ({ ...prev, [chunk!.section]: (prev[chunk!.section] ?? '') + chunk!.content }));
+              setSectionOrder((prev) => prev.includes(chunk!.section) ? prev : [...prev, chunk!.section]);
             }
           }
         }
