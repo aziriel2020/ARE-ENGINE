@@ -70,16 +70,28 @@ async function validateApiKey(rawKey: string): Promise<AuthContext | null> {
   }
 }
 
-/** Resolve the user's plan (with DB fallback for new/uncached users). */
-async function resolveUserPlan(userId: string): Promise<Plan> {
-  if (IS_TEST_MODE) return 'PRO';
+/**
+ * Ensure a User row exists for this Clerk user ID.
+ * Called lazily on first authenticated request — no Clerk webhook required.
+ */
+async function ensureUserExists(
+  userId: string,
+  email?: string | null
+): Promise<Plan> {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.upsert({
       where: { id: userId },
+      update: {},
+      create: {
+        id: userId,
+        email: email ?? `${userId}@clerk.local`,
+        plan: 'FREE',
+      },
       select: { plan: true },
     });
-    return user?.plan ?? 'FREE';
+    return user.plan;
   } catch {
+    // Non-critical — fall through with FREE plan
     return 'FREE';
   }
 }
@@ -107,7 +119,13 @@ export async function requireAuth(request: NextRequest): Promise<AuthContext | n
   try {
     const session = await auth();
     if (!session.userId) return null;
-    const plan = await resolveUserPlan(session.userId);
+
+    // Lazily create the User row on first request — no Clerk webhook needed
+    const plan = await ensureUserExists(
+      session.userId,
+      (session as { sessionClaims?: { email?: string } }).sessionClaims?.email
+    );
+
     return { userId: session.userId, orgId: session.orgId ?? null, plan, authMethod: 'clerk', apiKeyPermissions: [] };
   } catch {
     return null;
