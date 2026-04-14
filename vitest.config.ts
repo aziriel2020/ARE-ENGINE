@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: ['./src/__tests__/setup.ts'],
     env: {
       ARE_E_TEST_MODE: 'true',
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_placeholder',
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_dGVzdGluZy5jbGVyay5hY2NvdW50cy5kZXYk',
       CLERK_SECRET_KEY: 'sk_test_placeholder',
     },
   },

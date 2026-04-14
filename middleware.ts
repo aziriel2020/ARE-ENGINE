@@ -32,7 +32,7 @@ const securityHeaders: Record<string, string> = {
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
   if (isProtectedRoute(req)) {
-    auth().protect();
+    await auth.protect();
   }
 
   const response = NextResponse.next();

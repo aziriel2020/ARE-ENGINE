@@ -105,7 +105,7 @@ export async function requireAuth(request: NextRequest): Promise<AuthContext | n
   }
 
   try {
-    const session = auth() as { userId: string | null; orgId: string | null };
+    const session = await auth();
     if (!session.userId) return null;
     const plan = await resolveUserPlan(session.userId);
     return { userId: session.userId, orgId: session.orgId ?? null, plan, authMethod: 'clerk', apiKeyPermissions: [] };
@@ -128,7 +128,7 @@ export async function requireAdmin(request: NextRequest): Promise<AuthContext | 
 
   // In production: check Clerk org membership role
   try {
-    const session = auth() as { userId: string | null; orgRole?: string | null };
+    const session = await auth();
     if (session.userId && session.orgRole === 'org:admin') return ctx;
     return null;
   } catch {
