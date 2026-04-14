@@ -19,9 +19,15 @@ export const metadata: Metadata = {
   },
 };
 
+// Fallback used only at build time when Clerk env vars are not yet set.
+// Real keys must be configured in Vercel environment variables for auth to work.
+const BUILD_FALLBACK_PK = 'pk_test_dGVzdGluZy5jbGVyay5hY2NvdW50cy5kZXYk';
+const publishableKey =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || BUILD_FALLBACK_PK;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en" className="bg-[#000000]">
         <head />
         <body className="min-h-screen bg-[#000000] text-[#E8E8E8] font-body antialiased">

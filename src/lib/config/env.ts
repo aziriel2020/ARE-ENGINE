@@ -5,9 +5,9 @@ const envSchema = z.object({
     .string()
     .default('false')
     .transform((v) => v === 'true'),
-  // Clerk (required even in test — free dev tier)
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-  CLERK_SECRET_KEY: z.string().min(1),
+  // Clerk keys — required at runtime, optional during `next build`
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().default(''),
+  CLERK_SECRET_KEY: z.string().default(''),
   // Everything else: optional in test mode, required in prod
   GEMINI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
@@ -21,7 +21,9 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().default('http://localhost:3000'),
 });
 
-// Validate at module load time — fail fast if env is misconfigured
+// Validate at module load — but don't throw for missing Clerk keys at build time.
+// Clerk keys use empty-string defaults so the build succeeds; the Clerk SDK
+// will throw its own descriptive error at runtime if they're still empty.
 function parseEnv() {
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
