@@ -4,28 +4,32 @@ import { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/components/ui/toast-provider';
 import type { QualityReport } from '@/lib/schemas/blueprint';
 
-interface SseChunk {
-  section: string;
-  content: string;
-}
-
-interface GenerateResponse {
-  blueprintId?: string;
-  qualityReport?: QualityReport;
-  error?: string;
-}
-
+interface SseChunk { section: string; content: string; }
+interface GenerateResponse { blueprintId?: string; qualityReport?: QualityReport; error?: string; }
 type SectionMap = Record<string, string>;
 
 const SECTION_LABELS: Record<string, string> = {
-  verse_1: 'VERSE 1',
-  chorus: 'CHORUS',
-  verse_2: 'VERSE 2',
-  bridge: 'BRIDGE',
-  outro: 'OUTRO',
-  production_notes: 'PRODUCTION NOTES',
-  suno_prompt: 'SUNO PROMPT',
+  verse_1: 'Verse 1',
+  chorus: 'Chorus',
+  verse_2: 'Verse 2',
+  verse_3: 'Verse 3',
+  bridge: 'Bridge',
+  outro: 'Outro',
+  intro: 'Intro',
+  production_notes: 'Production Notes',
+  suno_prompt: 'Suno Prompt',
 };
+
+const SECTION_ICONS: Record<string, string> = {
+  verse_1: '01', chorus: '◈', verse_2: '02', verse_3: '03',
+  bridge: '↗', outro: '⌿', intro: '↘', production_notes: '⚙', suno_prompt: '▷',
+};
+
+const EXAMPLE_PROMPTS = [
+  'A cold, defiant trap track about loyalty tested by success — French rap aesthetic',
+  'Introspective R&B about the cost of keeping secrets for people you love',
+  'Hard drill record about street code — loyalty, silence, survival',
+];
 
 export default function StudioPage() {
   const { toast } = useToast();
@@ -36,29 +40,21 @@ export default function StudioPage() {
   const [report, setReport] = useState<QualityReport | null>(null);
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [statusLines, setStatusLines] = useState<string[]>([]);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [statusLines, sections]);
+  }, [sections]);
 
-  const addStatus = (line: string) => {
-    setStatusLines((prev) => [...prev, line]);
-  };
+  const addStatus = (line: string) => setStatusLines((p) => [...p, line]);
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) {
-      toast({ title: 'Enter a prompt first', variant: 'error' });
-      return;
-    }
-
+    if (!prompt.trim()) { toast({ title: 'Enter a prompt first', variant: 'error' }); return; }
     setGenerating(true);
-    setSections({});
-    setSectionOrder([]);
-    setReport(null);
-    setBlueprintId(null);
-    setStatusLines([]);
-    addStatus('◈ Initializing generation pipeline...');
+    setSections({}); setSectionOrder([]); setReport(null);
+    setBlueprintId(null); setStatusLines([]); setActiveSection(null);
+    addStatus('Initializing pipeline...');
 
     try {
       const res = await fetch('/api/generate', {
@@ -74,20 +70,17 @@ export default function StudioPage() {
 
       const contentType = res.headers.get('content-type') ?? '';
 
-      // Handle SSE stream
       if (contentType.includes('text/event-stream')) {
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
         if (!reader) throw new Error('No stream body');
-
-        addStatus('◈ Streaming blueprint...');
+        addStatus('Streaming blueprint...');
 
         let buffer = '';
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
           buffer += decoder.decode(value, { stream: true });
-
           const lines = buffer.split('\n');
           buffer = lines.pop() ?? '';
 
@@ -98,7 +91,7 @@ export default function StudioPage() {
 
             let chunk: SseChunk | null = null;
             try { chunk = JSON.parse(raw) as SseChunk; } catch { /* ignore */ }
-            if (!chunk) continue; // malformed JSON — skip line
+            if (!chunk) continue;
 
             if (chunk.section === 'error') {
               throw new Error(chunk.content || 'Generation failed');
@@ -109,39 +102,35 @@ export default function StudioPage() {
                   if (final.blueprintId) setBlueprintId(final.blueprintId);
                   if (final.qualityReport) {
                     setReport(final.qualityReport);
-                    addStatus(`◈ Quality grade: ${final.qualityReport.grade} (${final.qualityReport.aggregateScore}/100)`);
+                    addStatus(`Grade ${final.qualityReport.grade} — ${final.qualityReport.aggregateScore}/100`);
                   }
-                } catch { /* ignore malformed complete payload */ }
+                } catch { /* ignore */ }
               }
             } else {
+              setActiveSection(chunk.section);
               setSections((prev) => ({ ...prev, [chunk!.section]: (prev[chunk!.section] ?? '') + chunk!.content }));
               setSectionOrder((prev) => prev.includes(chunk!.section) ? prev : [...prev, chunk!.section]);
             }
           }
         }
       } else {
-        // Non-streaming fallback (test mode returns JSON)
         const data = (await res.json()) as GenerateResponse & { content?: string; sections?: SectionMap };
         if (data.error) throw new Error(data.error);
-        if (data.sections) {
-          setSections(data.sections);
-          setSectionOrder(Object.keys(data.sections));
-        } else if (data.content) {
-          setSections({ blueprint: data.content as string });
-          setSectionOrder(['blueprint']);
-        }
+        if (data.sections) { setSections(data.sections); setSectionOrder(Object.keys(data.sections)); }
+        else if (data.content) { setSections({ blueprint: data.content as string }); setSectionOrder(['blueprint']); }
         if (data.blueprintId) setBlueprintId(data.blueprintId as string);
         if (data.qualityReport) {
           setReport(data.qualityReport);
-          addStatus(`◈ Quality grade: ${data.qualityReport.grade} (${data.qualityReport.aggregateScore}/100)`);
+          addStatus(`Grade ${data.qualityReport.grade} — ${data.qualityReport.aggregateScore}/100`);
         }
-        addStatus('◈ Blueprint complete.');
+        addStatus('Blueprint complete.');
       }
     } catch (err) {
       toast({ title: 'Generation failed', description: String(err), variant: 'error' });
-      addStatus(`✗ Error: ${String(err)}`);
+      addStatus(`Failed — ${String(err)}`);
     } finally {
       setGenerating(false);
+      setActiveSection(null);
     }
   };
 
@@ -153,119 +142,284 @@ export default function StudioPage() {
     return 'var(--error)';
   };
 
+  const hasOutput = sectionOrder.length > 0;
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', minHeight: '100vh', maxHeight: '100vh' }}>
-      {/* Center: generate + output */}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', minHeight: '100vh', maxHeight: '100vh' }}>
+
+      {/* MAIN */}
       <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
         {/* Header */}
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
-          <h1 style={{ fontFamily: 'Space Mono, monospace', fontSize: '16px', color: 'var(--text-primary)' }}>
-            Generate Blueprint
-          </h1>
+        <div style={{
+          padding: '24px 28px 20px',
+          borderBottom: '1px solid var(--border)',
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+        }}>
+          <div>
+            <h1 style={{
+              fontFamily: 'Space Grotesk, sans-serif',
+              fontSize: '20px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.04em',
+              marginBottom: '4px',
+            }}>
+              Generate Blueprint
+            </h1>
+            <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', margin: 0, letterSpacing: '-0.01em' }}>
+              Describe your vision — ARE-E handles the rest
+            </p>
+          </div>
+          {generating && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              background: 'rgba(200,255,0,0.06)',
+              border: '1px solid rgba(200,255,0,0.2)',
+              borderRadius: '99px',
+              fontSize: '11px',
+              fontFamily: 'IBM Plex Mono, monospace',
+              color: 'var(--accent)',
+            }}>
+              <span className="spin-glyph" style={{ fontSize: '9px' }}>◈</span>
+              {activeSection ? `Streaming ${SECTION_LABELS[activeSection] ?? activeSection}...` : 'Processing...'}
+            </div>
+          )}
         </div>
 
-        {/* Prompt area */}
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+        {/* Prompt */}
+        <div style={{ padding: '20px 28px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe the blueprint you want: mood, theme, structure, constraints..."
+            onKeyDown={(e) => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleGenerate(); }}
+            placeholder="Describe the blueprint: mood, theme, genre, structural constraints..."
             rows={3}
             style={{
               width: '100%',
               background: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '2px',
-              padding: '12px',
+              border: '1px solid var(--border-hover)',
+              borderRadius: '10px',
+              padding: '14px 16px',
               color: 'var(--text-primary)',
-              fontFamily: 'DM Sans, sans-serif',
+              fontFamily: 'Space Grotesk, sans-serif',
               fontSize: '14px',
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               resize: 'none',
               outline: 'none',
-              transition: 'border-color 150ms ease',
+              transition: 'border-color 150ms ease, box-shadow 150ms ease',
             }}
-            onFocus={(e) => (e.target.style.borderColor = 'var(--accent)')}
-            onBlur={(e) => (e.target.style.borderColor = 'var(--border)')}
+            onFocus={(e) => {
+              e.target.style.borderColor = 'rgba(200,255,0,0.4)';
+              e.target.style.boxShadow = '0 0 0 3px rgba(200,255,0,0.06)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'var(--border-hover)';
+              e.target.style.boxShadow = 'none';
+            }}
           />
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
+
+          {/* Example prompts */}
+          {!hasOutput && !generating && (
+            <div style={{ marginTop: '10px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {EXAMPLE_PROMPTS.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPrompt(p)}
+                  style={{
+                    padding: '4px 10px',
+                    background: 'transparent',
+                    border: '1px solid var(--border-hover)',
+                    borderRadius: '4px',
+                    fontSize: '11px',
+                    color: 'var(--text-tertiary)',
+                    cursor: 'pointer',
+                    transition: 'all 100ms ease',
+                    fontFamily: 'Space Grotesk, sans-serif',
+                    letterSpacing: '-0.01em',
+                    maxWidth: '260px',
+                    textAlign: 'left',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)';
+                    (e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-hover)';
+                    (e.currentTarget as HTMLElement).style.color = 'var(--text-tertiary)';
+                  }}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
+            <span style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace' }}>
+              ⌘↵ to generate
+            </span>
             <button
               onClick={handleGenerate}
               disabled={generating}
               className="btn-primary"
-              style={{ padding: '8px 20px', fontSize: '13px' }}
+              style={{ padding: '9px 22px', fontSize: '13.5px', borderRadius: '8px', fontWeight: 700 }}
             >
               {generating ? (
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span className="spin-glyph">◈</span> Generating...
                 </span>
-              ) : '▶ Generate'}
+              ) : (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  Generate
+                  <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              )}
             </button>
           </div>
         </div>
 
-        {/* Status + output */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '24px' }}>
+        {/* Output */}
+        <div style={{ flex: 1, overflow: 'auto', padding: '24px 28px' }}>
+
+          {/* Status */}
           {statusLines.length > 0 && (
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{
+              marginBottom: '20px',
+              padding: '12px 16px',
+              background: 'rgba(200,255,0,0.03)',
+              border: '1px solid rgba(200,255,0,0.1)',
+              borderRadius: '8px',
+            }}>
               {statusLines.map((line, i) => (
-                <div
-                  key={i}
-                  style={{
-                    fontFamily: 'IBM Plex Mono, monospace',
-                    fontSize: '11px',
-                    color: 'var(--accent)',
-                    lineHeight: 1.8,
-                    opacity: i < statusLines.length - 1 ? 0.5 : 1,
-                  }}
-                >
+                <div key={i} style={{
+                  fontFamily: 'IBM Plex Mono, monospace',
+                  fontSize: '11px',
+                  color: i === statusLines.length - 1 ? 'var(--accent)' : 'var(--text-ghost)',
+                  lineHeight: 1.9,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}>
+                  <span style={{ color: 'var(--text-ghost)', flexShrink: 0 }}>
+                    {i === statusLines.length - 1 && generating ? '›' : '✓'}
+                  </span>
                   {line}
                 </div>
               ))}
             </div>
           )}
 
+          {/* Sections */}
           {sectionOrder.map((key) => (
-            <div key={key} style={{ marginBottom: '24px' }}>
-              <div
-                style={{
+            <div key={key} style={{ marginBottom: '20px' }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                marginBottom: '10px',
+              }}>
+                <span style={{
                   fontFamily: 'IBM Plex Mono, monospace',
-                  fontSize: '10px',
+                  fontSize: '11px',
+                  color: key === activeSection ? 'var(--accent)' : 'var(--text-ghost)',
+                  width: '18px',
+                  flexShrink: 0,
+                }}>
+                  {SECTION_ICONS[key] ?? '·'}
+                </span>
+                <span style={{
+                  fontSize: '11px',
+                  fontFamily: 'IBM Plex Mono, monospace',
                   color: 'var(--text-tertiary)',
-                  letterSpacing: '0.15em',
+                  letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  marginBottom: '8px',
-                }}
-              >
-                {SECTION_LABELS[key] ?? key}
+                  fontWeight: 500,
+                }}>
+                  {SECTION_LABELS[key] ?? key}
+                </span>
+                {key === activeSection && generating && (
+                  <span style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: 'var(--accent)',
+                    animation: 'glow-breathe 1s ease-in-out infinite',
+                    boxShadow: '0 0 8px var(--accent)',
+                    flexShrink: 0,
+                  }} />
+                )}
               </div>
-              <pre
-                style={{
-                  fontFamily: 'IBM Plex Mono, monospace',
-                  fontSize: '13px',
-                  color: 'var(--text-primary)',
-                  lineHeight: 1.8,
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                  margin: 0,
-                  background: 'var(--bg-surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '2px',
-                  padding: '16px',
-                }}
-              >
+              <pre style={{
+                fontFamily: 'IBM Plex Mono, monospace',
+                fontSize: '13px',
+                color: 'var(--text-primary)',
+                lineHeight: 1.9,
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                margin: 0,
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border)',
+                borderRadius: '8px',
+                padding: '16px 18px',
+              }}>
                 {sections[key]}
+                {key === activeSection && generating && <span className="cursor-blink" />}
               </pre>
             </div>
           ))}
 
+          {/* Empty state */}
+          {!hasOutput && !generating && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 32px', textAlign: 'center' }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '16px',
+                fontSize: '20px',
+                color: 'var(--text-ghost)',
+              }}>
+                ◈
+              </div>
+              <p style={{ fontSize: '14px', color: 'var(--text-tertiary)', margin: '0 0 6px', fontWeight: 500, letterSpacing: '-0.02em' }}>
+                Your blueprint will appear here
+              </p>
+              <p style={{ fontSize: '12px', color: 'var(--text-ghost)', margin: 0 }}>
+                Enter a prompt above and hit Generate
+              </p>
+            </div>
+          )}
+
           {blueprintId && (
-            <div style={{ marginTop: '16px' }}>
-              <a
-                href={`/studio/blueprints/${blueprintId}`}
-                style={{ fontSize: '12px', color: 'var(--accent)', fontFamily: 'IBM Plex Mono, monospace' }}
-              >
-                → View full blueprint with quality report
+            <div style={{ marginTop: '8px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+              <a href={`/studio/blueprints/${blueprintId}`} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '12px',
+                color: 'var(--accent)',
+                fontFamily: 'IBM Plex Mono, monospace',
+                fontWeight: 500,
+                transition: 'opacity 150ms',
+              }}>
+                View full blueprint →
               </a>
             </div>
           )}
@@ -273,91 +427,140 @@ export default function StudioPage() {
         </div>
       </div>
 
-      {/* Right panel: quality report preview */}
-      <div
-        style={{
-          borderLeft: '1px solid var(--border)',
-          background: 'var(--bg-elevated)',
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <div style={{ padding: '20px', borderBottom: '1px solid var(--border)' }}>
-          <h2 style={{ fontFamily: 'Space Mono, monospace', fontSize: '13px', color: 'var(--text-secondary)' }}>
-            QUALITY REPORT
-          </h2>
+      {/* RIGHT PANEL */}
+      <div style={{
+        borderLeft: '1px solid var(--border)',
+        background: 'var(--bg-elevated)',
+        overflow: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+        <div style={{ padding: '24px 20px 18px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>
+              QUALITY REPORT
+            </span>
+          </div>
         </div>
 
         {report ? (
-          <div style={{ padding: '16px', overflow: 'auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-secondary)' }}>
-                {report.aggregateScore}/100 — {report.passedLaws}/{report.passedLaws + report.failedLaws} laws
-              </span>
-              <span
-                style={{
-                  fontFamily: 'Space Mono, monospace',
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: gradeColor(report.grade),
-                }}
-              >
+          <div style={{ padding: '16px 20px', overflow: 'auto', flex: 1 }}>
+            {/* Grade display */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '16px',
+              background: 'var(--bg-surface)',
+              borderRadius: '10px',
+              border: '1px solid var(--border)',
+              marginBottom: '16px',
+            }}>
+              <div>
+                <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', marginBottom: '2px' }}>
+                  AGGREGATE
+                </div>
+                <div style={{ fontSize: '26px', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1 }}>
+                  {report.aggregateScore}
+                  <span style={{ fontSize: '14px', color: 'var(--text-tertiary)', fontWeight: 400 }}>/100</span>
+                </div>
+                <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '4px' }}>
+                  {report.passedLaws}/{report.passedLaws + report.failedLaws} laws passed
+                </div>
+              </div>
+              <div style={{
+                width: '52px',
+                height: '52px',
+                borderRadius: '10px',
+                background: `${gradeColor(report.grade)}15`,
+                border: `1px solid ${gradeColor(report.grade)}40`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '26px',
+                fontWeight: 800,
+                color: gradeColor(report.grade),
+                fontFamily: 'Space Grotesk, sans-serif',
+                letterSpacing: '-0.04em',
+              }}>
                 {report.grade}
-              </span>
+              </div>
             </div>
 
-            {report.laws.map((law) => (
-              <div
-                key={law.lawId}
-                style={{
+            {/* Laws list */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {report.laws.map((law) => (
+                <div key={law.lawId} style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '6px 0',
-                  borderBottom: '1px solid var(--border)',
+                  justifyContent: 'space-between',
+                  padding: '7px 0',
+                  borderBottom: '1px solid var(--border-subtle)',
                   gap: '8px',
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '11px',
-                    color: law.passed ? 'var(--text-secondary)' : 'var(--text-tertiary)',
-                    flex: 1,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  <span style={{ color: law.passed ? 'var(--success)' : 'var(--error)', marginRight: '4px' }}>
-                    {law.passed ? '●' : '●'}
-                  </span>
-                  {law.lawName}
-                </span>
-                <span
-                  style={{
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '7px', flex: 1, minWidth: 0 }}>
+                    <span style={{
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      background: law.passed ? 'var(--success)' : 'var(--error)',
+                      flexShrink: 0,
+                      boxShadow: law.passed ? '0 0 4px var(--success)' : '0 0 4px var(--error)',
+                    }} />
+                    <span style={{
+                      fontSize: '11.5px',
+                      color: law.passed ? 'var(--text-secondary)' : 'var(--text-tertiary)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      letterSpacing: '-0.01em',
+                    }}>
+                      {law.lawName}
+                    </span>
+                  </div>
+                  <span style={{
                     fontFamily: 'IBM Plex Mono, monospace',
                     fontSize: '10px',
-                    color: law.passed ? 'var(--text-tertiary)' : 'var(--error)',
+                    color: law.score >= 70 ? 'var(--text-tertiary)' : 'var(--error)',
                     flexShrink: 0,
-                  }}
-                >
-                  {law.score}
-                </span>
-              </div>
-            ))}
+                    fontWeight: 500,
+                  }}>
+                    {law.score}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
-          <div
-            style={{
-              flex: 1,
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '32px 20px',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '10px',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '32px 16px',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ fontSize: '12px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.7 }}>
-              Quality report will appear here after generation completes.
+              marginBottom: '12px',
+              fontSize: '16px',
+              color: 'var(--text-ghost)',
+            }}>
+              ◎
+            </div>
+            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px', fontWeight: 500 }}>
+              28-law evaluation
+            </p>
+            <p style={{ fontSize: '11px', color: 'var(--text-ghost)', margin: 0, lineHeight: 1.6 }}>
+              Quality report appears after generation
             </p>
           </div>
         )}
