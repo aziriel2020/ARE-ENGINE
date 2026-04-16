@@ -94,6 +94,7 @@ function AnimatedRow({ law, triggered, rowDelay }: { law: typeof SAMPLE_LAWS[0];
 export function QualitySection() {
   const [triggered, setTriggered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const headerScore = useCountUp(88, triggered);
 
   useEffect(() => {
     const el = ref.current;
@@ -223,7 +224,7 @@ export function QualitySection() {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', marginBottom: '2px' }}>
-                    {useCountUp(88, triggered)}/100
+                    {headerScore}/100
                   </div>
                   <div style={{
                     fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700,
