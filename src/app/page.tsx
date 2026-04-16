@@ -1,9 +1,11 @@
 import { PublicNav } from '@/components/nav/public-nav';
 import { Hero } from '@/components/landing/hero';
+import { LogoStrip } from '@/components/landing/logo-strip';
 import { ProblemSection } from '@/components/landing/problem-section';
 import { HowItWorks } from '@/components/landing/how-it-works';
 import { QualitySection } from '@/components/landing/quality-section';
 import { DnaSection } from '@/components/landing/dna-section';
+import { ComparisonSection } from '@/components/landing/comparison-section';
 import { PricingSection } from '@/components/landing/pricing-section';
 import { SocialProof } from '@/components/landing/social-proof';
 import { CtaSection } from '@/components/landing/cta-section';
@@ -15,10 +17,12 @@ export default function HomePage() {
       <PublicNav />
       <main>
         <Hero />
+        <LogoStrip />
         <ProblemSection />
         <HowItWorks />
         <QualitySection />
         <DnaSection />
+        <ComparisonSection />
         <PricingSection />
         <SocialProof />
         <CtaSection />
