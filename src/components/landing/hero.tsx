@@ -4,24 +4,35 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const TERMINAL_LINES = [
-  { text: '◈ Extracting Vocal DNA from 847 samples...', type: 'system' },
-  { text: '  lexical.vocabularyTier  → street', type: 'data' },
-  { text: '  emotional.primaryAxis   → defiant', type: 'data' },
-  { text: '  rhythmic.defaultFlow    → syncopated / 92 BPM', type: 'data' },
-  { text: '  influences.weight[SCH]  → 0.40', type: 'data' },
-  { text: '◈ Context cache hit — 80,312 tokens saved ($0.00)', type: 'success' },
-  { text: '◈ Generating with Gemini 2.5 Pro...', type: 'system' },
-  { text: '  [VERSE 1]', type: 'lyrics-label' },
-  { text: '  Téléphone éteint depuis trois jours, personne a rappelé', type: 'lyrics' },
-  { text: "  T'as changé d'étage, t'as changé d'haleine, t'as oublié", type: 'lyrics' },
-  { text: '◈ Scoring 28 laws...', type: 'system' },
-  { text: '  Grade A  — 88/100  — 25/28 laws passed ✓', type: 'grade' },
+  { text: '◈  Vocal DNA extraction started', type: 'system', ln: 1 },
+  { text: '   lexical.tier          →  street / vernacular', type: 'data', ln: 2 },
+  { text: '   emotional.axis        →  defiant / nostalgic', type: 'data', ln: 3 },
+  { text: '   rhythmic.flow         →  syncopated @ 92 BPM', type: 'data', ln: 4 },
+  { text: '   influence.SCH         →  0.40  MHD 0.22', type: 'data', ln: 5 },
+  { text: '◈  Context cache hit — 80,312 tokens saved ($0.00)', type: 'success', ln: 6 },
+  { text: '◈  Generating via Gemini 2.5 Pro...', type: 'system', ln: 7 },
+  { text: '   [VERSE 1]', type: 'label', ln: 8 },
+  { text: '   Téléphone éteint depuis trois jours, personne a rappelé', type: 'lyrics', ln: 9 },
+  { text: "   T'as changé d'étage, t'as changé d'haleine, t'as oublié", type: 'lyrics', ln: 10 },
+  { text: '◈  Scoring 28 laws...', type: 'system', ln: 11 },
+  { text: '   Grade A  ·  88 / 100  ·  25 / 28 laws passed ✓', type: 'grade', ln: 12 },
+];
+
+const TICKER_ITEMS = [
+  { glyph: '◉', text: 'Vocal DNA — 7 identity vectors' },
+  { glyph: '▶', text: 'Real-time SSE streaming' },
+  { glyph: '◈', text: '28-Law quality scoring' },
+  { glyph: '⌘', text: '90% cost reduction via context cache' },
+  { glyph: '◎', text: 'Gemini 2.5 Pro flagship model' },
+  { glyph: '◷', text: '14-day free trial on Pro' },
+  { glyph: '◈', text: 'Grade S / A / B / C / F per blueprint' },
+  { glyph: '▶', text: '4-stage generation pipeline' },
 ];
 
 const STATS = [
-  { value: '28', label: 'Quality Laws' },
-  { value: '7', label: 'DNA Vectors' },
-  { value: '3', label: 'AI Models' },
+  { value: '28',  label: 'Quality Laws' },
+  { value: '7',   label: 'DNA Vectors' },
+  { value: '90%', label: 'Cost Saved' },
   { value: '80K', label: 'Tokens Cached' },
 ];
 
@@ -32,155 +43,166 @@ export function Hero() {
   useEffect(() => {
     const id = setInterval(() => {
       setVisibleLines((n) => {
-        if (n >= TERMINAL_LINES.length) {
-          setDone(true);
-          clearInterval(id);
-          return n;
-        }
+        if (n >= TERMINAL_LINES.length) { setDone(true); clearInterval(id); return n; }
         return n + 1;
       });
-    }, 280);
+    }, 260);
     return () => clearInterval(id);
   }, []);
 
-  const getLineColor = (type: string) => {
-    if (type === 'system') return 'var(--accent)';
+  const lineColor = (type: string) => {
+    if (type === 'system')  return 'var(--accent)';
     if (type === 'success') return 'var(--success)';
-    if (type === 'grade') return 'var(--accent)';
-    if (type === 'lyrics-label') return 'var(--text-tertiary)';
-    if (type === 'lyrics') return 'var(--text-primary)';
+    if (type === 'grade')   return 'var(--accent)';
+    if (type === 'label')   return 'var(--text-tertiary)';
+    if (type === 'lyrics')  return 'var(--text-primary)';
     return 'var(--text-secondary)';
   };
+
+  const tickerRow = [...TICKER_ITEMS, ...TICKER_ITEMS];
 
   return (
     <section style={{ position: 'relative', overflow: 'hidden' }}>
 
-      {/* Background radial glow */}
+      {/* Primary radial glow */}
       <div style={{
         position: 'absolute',
-        top: '-20%',
+        top: '-10%',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '900px',
-        height: '600px',
-        background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.06) 0%, rgba(200,255,0,0.02) 40%, transparent 70%)',
+        width: '1100px',
+        height: '700px',
+        background: 'radial-gradient(ellipse 60% 55% at 50% 0%, rgba(200,255,0,0.07) 0%, rgba(200,255,0,0.02) 50%, transparent 100%)',
         pointerEvents: 'none',
       }} />
 
-      {/* Grid pattern */}
+      {/* Fine grid pattern */}
       <div style={{
         position: 'absolute',
         inset: 0,
         backgroundImage: `
-          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)
+          linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)
         `,
-        backgroundSize: '64px 64px',
-        maskImage: 'radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)',
+        backgroundSize: '72px 72px',
+        maskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%)',
         pointerEvents: 'none',
       }} />
 
+      {/* Main two-column grid */}
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '1240px',
         margin: '0 auto',
-        padding: 'clamp(80px, 10vw, 140px) 32px clamp(80px, 8vw, 120px)',
+        padding: 'clamp(96px, 12vw, 160px) 32px clamp(80px, 8vw, 120px)',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '64px',
+        gap: '80px',
         alignItems: 'center',
+        position: 'relative',
       }}>
 
-        {/* LEFT — Copy */}
-        <div style={{ maxWidth: '560px' }}>
+        {/* LEFT — copy */}
+        <div style={{ maxWidth: '600px' }}>
 
-          {/* Badge */}
+          {/* Live badge */}
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
-            padding: '5px 14px',
-            marginBottom: '36px',
-            background: 'rgba(200,255,0,0.06)',
-            border: '1px solid rgba(200,255,0,0.2)',
+            gap: '10px',
+            padding: '6px 14px 6px 10px',
+            marginBottom: '40px',
+            background: 'rgba(200,255,0,0.05)',
+            border: '1px solid rgba(200,255,0,0.18)',
             borderRadius: '99px',
             fontSize: '11px',
             fontFamily: 'IBM Plex Mono, monospace',
             color: 'var(--accent)',
-            letterSpacing: '0.08em',
+            letterSpacing: '0.09em',
           }}>
-            <span className="spin-glyph" style={{ fontSize: '8px' }}>◈</span>
+            <span className="live-dot" />
             V3.0 OPUS SUPREME — LIVE
           </div>
 
           {/* Headline */}
           <h1 style={{
-            fontSize: 'clamp(44px, 5.5vw, 76px)',
+            fontSize: 'clamp(60px, 8.5vw, 116px)',
             fontFamily: 'Space Grotesk, sans-serif',
             fontWeight: 700,
-            letterSpacing: '-0.04em',
-            lineHeight: 1.0,
-            marginBottom: '28px',
+            letterSpacing: '-0.05em',
+            lineHeight: 0.95,
+            marginBottom: '32px',
             color: 'var(--text-primary)',
           }}>
-            Your lyrics<br />
-            sound like<br />
+            Your lyrics
+            <br />
+            sound like
+            <br />
             <span style={{
-              background: 'linear-gradient(135deg, var(--accent) 0%, #90FF00 100%)',
+              background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 45%, #E8FF80 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-            }}>you.</span>{' '}
-            <span style={{ color: 'var(--text-secondary)', fontSize: '0.9em' }}>Finally.</span>
+            }}>you.</span>
+            {' '}
+            <span style={{
+              color: 'var(--text-tertiary)',
+              fontSize: '0.72em',
+              letterSpacing: '-0.03em',
+              fontWeight: 300,
+            }}>
+              Finally.
+            </span>
           </h1>
 
           {/* Body */}
           <p style={{
             fontSize: '17px',
             color: 'var(--text-secondary)',
-            lineHeight: 1.75,
-            marginBottom: '44px',
+            lineHeight: 1.8,
+            marginBottom: '48px',
             fontWeight: 400,
+            maxWidth: '480px',
           }}>
             ARE-E extracts your Vocal DNA across 7 identity vectors, then generates
-            song blueprints scored against 28 quality laws. Not generic AI output —
+            song blueprints scored against 28 quality laws. Not generic AI —
             your voice, systematized at model scale.
           </p>
 
           {/* CTAs */}
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '52px' }}>
-            <Link href="/sign-up" className="btn-primary" style={{ fontSize: '15px', padding: '12px 28px', borderRadius: '8px' }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '56px' }}>
+            <Link href="/sign-up" className="btn-primary" style={{ fontSize: '15px', padding: '13px 32px', borderRadius: '8px' }}>
               Start Free
               <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <Link href="/pricing" className="btn-ghost" style={{ fontSize: '15px', padding: '12px 24px', borderRadius: '8px' }}>
+            <Link href="/pricing" className="btn-ghost" style={{ fontSize: '15px', padding: '12px 26px', borderRadius: '8px' }}>
               View Pricing
             </Link>
           </div>
 
-          {/* Stats */}
+          {/* Stats strip */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '0',
+            paddingTop: '32px',
             borderTop: '1px solid var(--border)',
-            paddingTop: '28px',
           }}>
             {STATS.map((s, i) => (
               <div key={s.label} style={{
-                paddingRight: '20px',
+                paddingRight: i < STATS.length - 1 ? '20px' : '0',
                 borderRight: i < STATS.length - 1 ? '1px solid var(--border)' : 'none',
                 marginRight: i < STATS.length - 1 ? '20px' : '0',
               }}>
                 <div style={{
-                  fontSize: 'clamp(22px, 2.5vw, 30px)',
+                  fontSize: 'clamp(22px, 2.5vw, 32px)',
                   fontFamily: 'Space Grotesk, sans-serif',
                   fontWeight: 700,
-                  letterSpacing: '-0.04em',
+                  letterSpacing: '-0.05em',
                   color: 'var(--accent)',
                   lineHeight: 1,
-                  marginBottom: '4px',
+                  marginBottom: '5px',
                 }}>
                   {s.value}
                 </div>
@@ -198,86 +220,145 @@ export function Hero() {
           </div>
         </div>
 
-        {/* RIGHT — Terminal */}
+        {/* RIGHT — terminal */}
         <div style={{ position: 'relative' }}>
 
           {/* Glow behind terminal */}
           <div style={{
             position: 'absolute',
-            inset: '-20px',
-            background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.07) 0%, transparent 70%)',
+            inset: '-40px',
+            background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.08) 0%, transparent 70%)',
+            filter: 'blur(24px)',
             pointerEvents: 'none',
-            filter: 'blur(20px)',
           }} />
 
-          {/* Terminal window */}
-          <div style={{
-            position: 'relative',
-            background: 'var(--bg-elevated)',
-            border: '1px solid var(--border-hover)',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset',
-          }}>
-            {/* Terminal chrome */}
-            <div style={{
-              padding: '14px 18px',
-              borderBottom: '1px solid var(--border)',
-              background: 'var(--bg-surface)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FF5F57', display: 'inline-block' }} />
-              <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#FFBD2E', display: 'inline-block' }} />
-              <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#28CA41', display: 'inline-block' }} />
+          <div className="terminal-window" style={{ position: 'relative' }}>
+
+            {/* Chrome */}
+            <div className="terminal-chrome">
+              <span className="terminal-dot" style={{ background: '#FF5F57' }} />
+              <span className="terminal-dot" style={{ background: '#FFBD2E' }} />
+              <span className="terminal-dot" style={{ background: '#28CA41' }} />
               <span style={{
-                marginLeft: '12px',
+                marginLeft: '14px',
                 fontSize: '11px',
                 fontFamily: 'IBM Plex Mono, monospace',
                 color: 'var(--text-tertiary)',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.04em',
               }}>
-                are-engine / pipeline
+                are-engine / pipeline.ts
+              </span>
+              <span style={{
+                marginLeft: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontSize: '10px',
+                fontFamily: 'IBM Plex Mono, monospace',
+                color: 'var(--accent)',
+              }}>
+                <span className="live-dot" style={{ width: '5px', height: '5px' }} />
+                LIVE
               </span>
             </div>
 
-            {/* Terminal body */}
+            {/* Body with line numbers */}
             <div style={{
-              padding: '20px 22px 24px',
+              display: 'grid',
+              gridTemplateColumns: '36px 1fr',
               fontFamily: 'IBM Plex Mono, monospace',
-              fontSize: '12.5px',
-              lineHeight: 1.9,
-              minHeight: '340px',
+              fontSize: '12px',
+              lineHeight: 2,
+              minHeight: '380px',
             }}>
-              {TERMINAL_LINES.slice(0, visibleLines).map((line, i) => (
-                <div
-                  key={i}
-                  className="animate-fade-in-up"
-                  style={{
-                    color: getLineColor(line.type),
-                    fontWeight: line.type === 'grade' ? 500 : 400,
-                    animationDelay: '0ms',
-                  }}
-                >
-                  {line.text}
-                </div>
-              ))}
-              {!done && visibleLines < TERMINAL_LINES.length && (
-                <div style={{ color: 'var(--accent)' }} className="cursor-blink" />
-              )}
+              {/* Gutter */}
+              <div style={{
+                background: 'rgba(255,255,255,0.015)',
+                borderRight: '1px solid var(--border)',
+                padding: '20px 0',
+                textAlign: 'right',
+              }}>
+                {TERMINAL_LINES.slice(0, visibleLines).map((line) => (
+                  <div key={line.ln} style={{
+                    color: 'var(--text-ghost)',
+                    fontSize: '11px',
+                    paddingRight: '10px',
+                    userSelect: 'none',
+                  }}>
+                    {line.ln}
+                  </div>
+                ))}
+              </div>
+
+              {/* Lines */}
+              <div style={{ padding: '20px 20px 24px' }}>
+                {TERMINAL_LINES.slice(0, visibleLines).map((line, i) => (
+                  <div
+                    key={i}
+                    className="animate-fade-in-up"
+                    style={{
+                      color: lineColor(line.type),
+                      fontWeight: line.type === 'grade' ? 600 : 400,
+                      animationDelay: '0ms',
+                    }}
+                  >
+                    {line.text}
+                  </div>
+                ))}
+                {!done && visibleLines < TERMINAL_LINES.length && (
+                  <div className="cursor-blink" />
+                )}
+              </div>
+            </div>
+
+            {/* Status bar */}
+            <div style={{
+              padding: '7px 16px',
+              borderTop: '1px solid var(--border)',
+              background: 'rgba(200,255,0,0.03)',
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+              <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em' }}>
+                ◈ ARE-ENGINE
+              </span>
+              <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', marginLeft: 'auto' }}>
+                Gemini 2.5 Pro · SSE · UTF-8
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile: stack vertically */}
-      <style>{`
-        @media (max-width: 768px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-          .hero-terminal { display: none; }
-        }
-      `}</style>
+      {/* Ticker marquee */}
+      <div style={{
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
+        padding: '13px 0',
+        background: 'var(--bg-elevated)',
+      }}>
+        <div className="marquee-track">
+          <div className="marquee-inner">
+            {tickerRow.map((item, i) => (
+              <span key={i} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                paddingRight: '48px',
+                fontSize: '11px',
+                fontFamily: 'IBM Plex Mono, monospace',
+                color: 'var(--text-tertiary)',
+                letterSpacing: '0.04em',
+                whiteSpace: 'nowrap',
+              }}>
+                <span style={{ color: 'rgba(200,255,0,0.5)', fontSize: '10px' }}>{item.glyph}</span>
+                {item.text}
+                <span style={{ color: 'var(--text-ghost)', paddingLeft: '48px' }}>·</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
