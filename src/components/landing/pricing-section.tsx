@@ -9,16 +9,17 @@ const TIERS = [
     name: 'Free',
     tag: 'FREE',
     monthlyPrice: 0,
-    subtitle: 'Try it. Fall in love.',
+    subtitle: 'Experience the difference.',
     highlight: 'No card needed',
     features: [
-      '5 song blueprints — completely free',
-      'Your first voice profile',
-      'Powered by Gemini 2.5 Flash',
-      'Export as text',
-      'Community support',
+      '5 complete generations — free forever',
+      'Full Vocal DNA mapping',
+      'All 3 laws: Ghost Line, Ugly Emotion, Tear-Drop Detail',
+      'French and English, both fully supported',
+      '10-block output on every generation',
+      'Suno and Udio prompts included',
     ],
-    cta: 'Start Free Now',
+    cta: 'Start Free',
     href: '/sign-up',
     featured: false,
     scale: false,
@@ -30,13 +31,12 @@ const TIERS = [
     subtitle: 'For artists who are serious.',
     highlight: '14-day free trial',
     features: [
-      '100 blueprints / month',
-      '5 voice profiles — write for any artist',
-      'Gemini 2.5 Pro flagship model',
-      'Full 28-law scoring + grades',
-      'Every draft saved, versioned, comparable',
+      '100 generations / month',
+      '5 Vocal DNA profiles — write for any artist',
+      'Full 16-law audit + 10 Perfection Modules',
+      'Every generation saved, versioned, comparable',
       'PDF, Markdown, TXT export',
-      '2 API keys',
+      '2 API keys for integrations',
     ],
     cta: 'Start 14-Day Trial',
     href: '/sign-up',
@@ -47,12 +47,12 @@ const TIERS = [
     name: 'Studio',
     tag: 'STUDIO',
     monthlyPrice: 799,
-    subtitle: 'Scale your creative roster.',
+    subtitle: 'For producers and labels.',
     highlight: '14-day free trial',
     features: [
-      '500 blueprints / month',
-      '20 voice profiles — your full roster',
-      'All export formats incl. DOCX + JSON',
+      '500 generations / month',
+      '20 Vocal DNA profiles — your full roster',
+      'All export formats including DOCX + JSON',
       '10 API keys + 5 webhooks',
       'Priority 24h support',
     ],
@@ -65,13 +65,13 @@ const TIERS = [
     name: 'Enterprise',
     tag: 'ENTERPRISE',
     monthlyPrice: 2999,
-    subtitle: 'For labels and platforms.',
+    subtitle: 'For platforms and large labels.',
     highlight: '30-day pilot',
     features: [
-      'Unlimited blueprints — no caps',
-      'Unlimited voice profiles',
+      'Unlimited generations — no caps',
+      'Unlimited Vocal DNA profiles',
       'Unlimited API keys + webhooks',
-      'Full API-first programmatic control',
+      'Full API-first programmatic access',
       'Dedicated support + uptime SLA',
     ],
     cta: 'Contact Sales',
@@ -90,18 +90,9 @@ export function PricingSection() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <section style={{
-      padding: 'clamp(96px, 12vw, 140px) 32px',
-      borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
-      background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden',
-    }}>
+    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden' }}>
 
-      <div style={{
-        position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)',
-        width: '800px', height: '400px',
-        background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.05) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
+      <div style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '400px', background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
 
@@ -110,50 +101,23 @@ export function PricingSection() {
             <div style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '16px' }}>
               Pricing
             </div>
-            <h2 style={{
-              fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(36px, 5vw, 60px)',
-              fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97,
-              color: 'var(--text-primary)', marginBottom: '16px',
-            }}>
-              Your first blueprint
+            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97, color: 'var(--text-primary)', marginBottom: '16px' }}>
+              Your first 5 songs
               <br />
-              <span style={{
-                background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>
-                is waiting.
+              <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                are on us.
               </span>
             </h2>
             <p style={{ fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '36px', lineHeight: 1.7 }}>
               Start free. No card. Upgrade only when you can&apos;t imagine going back.
             </p>
 
-            {/* Toggle */}
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0',
-              background: 'var(--bg-surface)', border: '1px solid var(--border-hover)',
-              borderRadius: '9px', padding: '3px',
-            }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0', background: 'var(--bg-surface)', border: '1px solid var(--border-hover)', borderRadius: '9px', padding: '3px' }}>
               {[{ label: 'Monthly', value: false }, { label: 'Annual', value: true, badge: 'Save 20%' }].map((opt) => (
-                <button key={String(opt.value)} onClick={() => setAnnual(opt.value)} style={{
-                  display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px',
-                  borderRadius: '7px', border: 'none', cursor: 'pointer',
-                  fontSize: '13px', fontFamily: 'Space Grotesk, sans-serif',
-                  fontWeight: annual === opt.value ? 600 : 400,
-                  color: annual === opt.value ? 'var(--text-primary)' : 'var(--text-secondary)',
-                  background: annual === opt.value ? 'var(--bg-active)' : 'transparent',
-                  transition: 'all 150ms ease', letterSpacing: '-0.01em',
-                }}>
+                <button key={String(opt.value)} onClick={() => setAnnual(opt.value)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px', borderRadius: '7px', border: 'none', cursor: 'pointer', fontSize: '13px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: annual === opt.value ? 600 : 400, color: annual === opt.value ? 'var(--text-primary)' : 'var(--text-secondary)', background: annual === opt.value ? 'var(--bg-active)' : 'transparent', transition: 'all 150ms ease', letterSpacing: '-0.01em' }}>
                   {opt.label}
                   {opt.badge && (
-                    <span style={{
-                      fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
-                      color: annual === opt.value ? 'var(--accent)' : 'var(--text-ghost)',
-                      padding: '2px 6px',
-                      border: `1px solid ${annual === opt.value ? 'rgba(200,255,0,0.2)' : 'transparent'}`,
-                      borderRadius: '4px', background: annual === opt.value ? 'rgba(200,255,0,0.06)' : 'transparent',
-                      transition: 'all 150ms ease',
-                    }}>
+                    <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: annual === opt.value ? 'var(--accent)' : 'var(--text-ghost)', padding: '2px 6px', border: `1px solid ${annual === opt.value ? 'rgba(200,255,0,0.2)' : 'transparent'}`, borderRadius: '4px', background: annual === opt.value ? 'rgba(200,255,0,0.06)' : 'transparent', transition: 'all 150ms ease' }}>
                       {opt.badge}
                     </span>
                   )}
@@ -173,9 +137,7 @@ export function PricingSection() {
                 display: 'flex', flexDirection: 'column', gap: '24px',
                 position: 'relative',
                 transform: tier.scale ? 'scale(1.03)' : 'none', transformOrigin: 'top center',
-                boxShadow: tier.featured
-                  ? '0 0 60px rgba(200,255,0,0.08), 0 24px 48px rgba(0,0,0,0.5)'
-                  : '0 8px 24px rgba(0,0,0,0.3)',
+                boxShadow: tier.featured ? '0 0 60px rgba(200,255,0,0.08), 0 24px 48px rgba(0,0,0,0.5)' : '0 8px 24px rgba(0,0,0,0.3)',
                 zIndex: tier.featured ? 1 : 0,
               }}>
                 {tier.featured && (
@@ -220,10 +182,7 @@ export function PricingSection() {
                   ))}
                 </ul>
 
-                <Link href={tier.href} className={tier.featured ? 'btn-primary' : 'btn'} style={{
-                  textAlign: 'center', marginTop: 'auto', borderRadius: '9px',
-                  padding: '12px', fontSize: '14px', fontWeight: tier.featured ? 700 : 500,
-                }}>
+                <Link href={tier.href} className={tier.featured ? 'btn-primary' : 'btn'} style={{ textAlign: 'center', marginTop: 'auto', borderRadius: '9px', padding: '12px', fontSize: '14px', fontWeight: tier.featured ? 700 : 500 }}>
                   {tier.cta}
                 </Link>
               </div>

@@ -56,7 +56,7 @@ export function StickyCta() {
           fontFamily: 'IBM Plex Mono, monospace',
           letterSpacing: '0.02em',
         }}>
-          Your first blueprint is free — no card needed
+          5 songs free · Vocal DNA · 10 blocks · No card
         </span>
 
         <Link href="/sign-up" className="btn-primary" style={{ fontSize: '13px', padding: '8px 22px', borderRadius: '99px' }}>

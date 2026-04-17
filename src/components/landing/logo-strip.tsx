@@ -30,7 +30,7 @@ export function LogoStrip() {
         letterSpacing: '0.14em',
         textTransform: 'uppercase',
       }}>
-        The platform serious artists trust to stay original
+        Trusted by artists, producers, and Suno creators worldwide
       </div>
 
       <div className="marquee-track">

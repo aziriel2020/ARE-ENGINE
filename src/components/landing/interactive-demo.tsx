@@ -194,11 +194,14 @@ export function InteractiveDemo() {
               color: 'var(--text-primary)',
               marginBottom: '16px',
             }}>
-              See your voice in the machine.
+              Watch ARE extract your
+              <br />
+              <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                Vocal DNA live.
+              </span>
             </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.7 }}>
-              Choose a style profile. Watch ARE-E extract the voice DNA, stream a full blueprint live,
-              and score it against 28 laws in under 4 minutes. No setup. No waiting.
+            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
+              Select an artist style. ARE maps their 7-dimension Vocal DNA, streams the lyrics (Block 3 of 10), and runs the 100/100 quality protocol — all in under 4 minutes. This is what you get on every generation.
             </p>
           </div>
         </Reveal>
@@ -302,7 +305,7 @@ export function InteractiveDemo() {
                 background: 'var(--bg-elevated)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
-                <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Blueprint Output</span>
+                <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Block 3 — Lyrics</span>
                 {phase === 'generating' && (
                   <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: '5px' }}>
                     <span className="live-dot" style={{ width: '5px', height: '5px' }} />
@@ -353,7 +356,7 @@ export function InteractiveDemo() {
                   justifyContent: 'space-between',
                 }}>
                   <div>
-                    <div style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', marginBottom: '2px' }}>28-LAW SCORE</div>
+                    <div style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', marginBottom: '2px' }}>100/100 PROTOCOL</div>
                     <div style={{ height: '3px', width: '120px', background: 'var(--border)', borderRadius: '2px', overflow: 'hidden' }}>
                       <div style={{
                         width: `${scoreVal}%`,

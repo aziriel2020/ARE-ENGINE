@@ -1,183 +1,101 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-const ROTATING_WORDS = ['fearless.', 'raw.', 'defiant.', 'real.', 'alive.'];
+const ROTATING = [
+  'generic.',
+  'hollow.',
+  'obvious.',
+  'not you.',
+  'AI.',
+];
+
+const STATS = [
+  { value: '100/100', label: 'mandatory score — every time' },
+  { value: '0',       label: 'clichés — 220+ banned before writing starts' },
+  { value: '10',      label: 'blocks per song — lyrics to release strategy' },
+  { value: 'FR + EN', label: 'both languages — full system in each' },
+];
 
 export function Hero() {
-  const [wordIdx, setWordIdx] = useState(0);
-  const [fade, setFade] = useState(true);
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const cycle = setInterval(() => {
-      setFade(false);
+    const interval = setInterval(() => {
+      setVisible(false);
       setTimeout(() => {
-        setWordIdx(i => (i + 1) % ROTATING_WORDS.length);
-        setFade(true);
+        setIdx(i => (i + 1) % ROTATING.length);
+        setVisible(true);
       }, 300);
-    }, 2200);
-    return () => clearInterval(cycle);
+    }, 2400);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <section style={{ position: 'relative', overflow: 'hidden' }}>
+    <section style={{ padding: 'clamp(120px, 14vw, 180px) 32px clamp(80px, 10vw, 120px)', position: 'relative', overflow: 'hidden' }}>
 
-      {/* Background */}
-      <div style={{
-        position: 'absolute', top: '-20%', left: '50%', transform: 'translateX(-50%)',
-        width: '1400px', height: '900px',
-        background: 'radial-gradient(ellipse 55% 50% at 50% 0%, rgba(200,255,0,0.09) 0%, rgba(200,255,0,0.025) 45%, transparent 100%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', top: '5%', left: '20%', width: '700px', height: '700px',
-        background: 'radial-gradient(ellipse, rgba(200,255,0,0.045) 0%, transparent 65%)',
-        animation: 'blob-drift-1 16s ease-in-out infinite', filter: 'blur(60px)', pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', top: '30%', right: '0%', width: '500px', height: '500px',
-        background: 'radial-gradient(ellipse, rgba(80,40,255,0.03) 0%, transparent 65%)',
-        animation: 'blob-drift-2 22s ease-in-out infinite', filter: 'blur(48px)', pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.016) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px)`,
-        backgroundSize: '80px 80px',
-        maskImage: 'radial-gradient(ellipse 85% 65% at 50% 0%, black 20%, transparent 100%)',
-        WebkitMaskImage: 'radial-gradient(ellipse 85% 65% at 50% 0%, black 20%, transparent 100%)',
-        pointerEvents: 'none',
-      }} />
+      <div style={{ position: 'absolute', top: '-80px', left: '50%', transform: 'translateX(-50%)', width: '900px', height: '600px', background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', backgroundSize: '80px 80px', maskImage: 'radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 100%)', WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 100%)', pointerEvents: 'none' }} />
 
-      <div style={{
-        maxWidth: '1120px', margin: '0 auto',
-        padding: 'clamp(120px, 14vw, 180px) 32px clamp(80px, 8vw, 120px)',
-        position: 'relative', textAlign: 'center',
-      }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
 
-        {/* Social proof badge */}
-        <div className="hs1" style={{
-          display: 'inline-flex', alignItems: 'center', gap: '10px',
-          padding: '6px 16px 6px 10px', marginBottom: '40px',
-          background: 'rgba(200,255,0,0.05)', border: '1px solid rgba(200,255,0,0.2)',
-          borderRadius: '99px',
-        }}>
-          <span className="live-dot" />
-          <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em' }}>
-            500+ artists already inside
+        <div className="hs1" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', border: '1px solid rgba(200,255,0,0.2)', borderRadius: '99px', background: 'rgba(200,255,0,0.04)', marginBottom: '40px' }}>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 6px rgba(200,255,0,0.7)', display: 'inline-block' }} />
+          <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-secondary)', letterSpacing: '0.06em' }}>
+            500+ artists generating right now
           </span>
         </div>
 
-        {/* Headline */}
-        <h1 className="hs2" style={{
-          fontSize: 'clamp(56px, 9vw, 128px)',
-          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700,
-          letterSpacing: '-0.055em', lineHeight: 0.92,
-          color: 'var(--text-primary)', marginBottom: '8px',
-        }}>
-          Write the song
+        <h1 className="hs2" style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(48px, 8vw, 100px)', fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 0.92, color: 'var(--text-primary)', marginBottom: '32px' }}>
+          Stop writing songs
           <br />
-          only you
-          <br />
-          could write.
+          that sound like{' '}
+          <span style={{
+            background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 60%, #E8FF80 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 280ms ease',
+            display: 'inline-block',
+          }}>
+            {ROTATING[idx]}
+          </span>
         </h1>
 
-        {/* Rotating accent word */}
-        <div className="hs2" style={{
-          fontSize: 'clamp(56px, 9vw, 128px)',
-          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700,
-          letterSpacing: '-0.055em', lineHeight: 0.92,
-          marginBottom: '48px',
-          background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 50%, #E8FF80 100%)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          opacity: fade ? 1 : 0, transition: 'opacity 0.3s ease',
-        }}>
-          Make it {ROTATING_WORDS[wordIdx]}
-        </div>
-
-        {/* Sub */}
-        <p className="hs3" style={{
-          fontSize: 'clamp(17px, 2vw, 21px)', color: 'var(--text-secondary)',
-          lineHeight: 1.75, maxWidth: '600px', margin: '0 auto 52px',
-          fontWeight: 400,
-        }}>
-          ARE-E maps your artistic identity, then generates complete song blueprints
-          that actually sound like you — graded before you read a single word.
+        <p className="hs3" style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: 'var(--text-secondary)', lineHeight: 1.75, maxWidth: '620px', margin: '0 auto 48px', letterSpacing: '-0.01em' }}>
+          ARE builds your <strong style={{ color: 'var(--text-primary)' }}>Vocal DNA</strong> first — maps your voice in 7 dimensions — then writes in your language, your emotion, your truth. Not AI&apos;s best guess. Yours.
         </p>
 
-        {/* CTAs */}
-        <div className="hs4" style={{ display: 'flex', gap: '12px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
-          <Link href="/sign-up" className="btn-primary" style={{ fontSize: '16px', padding: '15px 40px', borderRadius: '9px', fontWeight: 700 }}>
-            Write My First Blueprint Free
+        <div className="hs4" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '64px' }}>
+          <Link href="/sign-up" className="btn-primary" style={{ fontSize: '17px', padding: '16px 48px', borderRadius: '10px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+            Write My First Song Free
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </Link>
-          <Link href="#demo" className="btn-ghost" style={{ fontSize: '15px', padding: '14px 28px', borderRadius: '9px' }}>
-            See It Live
+          <Link href="#demo" className="btn" style={{ fontSize: '15px', padding: '15px 28px', borderRadius: '10px' }}>
+            See a real output
           </Link>
         </div>
 
-        <p className="hs4" style={{ fontSize: '12px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.06em' }}>
-          No credit card · 5 free blueprints · Cancel anytime
-        </p>
-
-        {/* Outcome stats */}
         <div className="hs5" style={{
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-          maxWidth: '640px', margin: '64px auto 0',
-          paddingTop: '40px', borderTop: '1px solid var(--border)',
-          gap: '0',
+          border: '1px solid var(--border)', borderRadius: '14px',
+          background: 'var(--bg-elevated)', overflow: 'hidden',
         }}>
-          {[
-            { value: '< 4 min',  label: 'to first A-grade' },
-            { value: '0',        label: 'generic clichés' },
-            { value: '5',        label: 'blueprints free' },
-            { value: '14 days',  label: 'Pro trial' },
-          ].map((s, i, arr) => (
-            <div key={s.label} style={{
-              paddingRight: i < arr.length - 1 ? '24px' : '0',
-              borderRight: i < arr.length - 1 ? '1px solid var(--border)' : 'none',
-              marginRight: i < arr.length - 1 ? '24px' : '0',
-              textAlign: 'center',
-            }}>
-              <div style={{
-                fontSize: 'clamp(20px, 2.5vw, 28px)', fontFamily: 'Space Grotesk, sans-serif',
-                fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--accent)', lineHeight: 1, marginBottom: '6px',
-              }}>
+          {STATS.map((s, i) => (
+            <div key={i} style={{ padding: '24px 16px', textAlign: 'center', borderRight: i < 3 ? '1px solid var(--border)' : 'none' }}>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(18px, 2.5vw, 30px)', fontWeight: 700, letterSpacing: '-0.04em', color: 'var(--accent)', lineHeight: 1, marginBottom: '6px' }}>
                 {s.value}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.05em', textTransform: 'uppercase', lineHeight: 1.4 }}>
+              <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', letterSpacing: '0.03em', lineHeight: 1.4 }}>
                 {s.label}
               </div>
             </div>
           ))}
         </div>
 
-      </div>
-
-      {/* Ticker */}
-      <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '12px 0', background: 'var(--bg-elevated)' }}>
-        <div className="marquee-track">
-          <div className="marquee-inner" style={{ animation: 'marquee 28s linear infinite' }}>
-            {[...Array(2)].flatMap(() => [
-              { glyph: '◉', text: 'Your voice. Not average.' },
-              { glyph: '▶', text: 'A-grade in under 4 minutes' },
-              { glyph: '◈', text: '28 quality checks on every draft' },
-              { glyph: '⌘', text: 'Any language · Any genre' },
-              { glyph: '◎', text: 'Gemini 2.5 Pro flagship' },
-              { glyph: '◷', text: '14-day free trial on Pro' },
-              { glyph: '◈', text: 'Grade S to F — know before you play it' },
-              { glyph: '▶', text: '500+ artists and counting' },
-            ]).map((item, i) => (
-              <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', paddingRight: '48px', fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
-                <span style={{ color: 'rgba(200,255,0,0.5)', fontSize: '10px' }}>{item.glyph}</span>
-                {item.text}
-                <span style={{ color: 'var(--text-ghost)', paddingLeft: '48px' }}>·</span>
-              </span>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
