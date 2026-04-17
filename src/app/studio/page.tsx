@@ -3,10 +3,16 @@
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/components/ui/toast-provider';
 import type { QualityReport } from '@/lib/schemas/blueprint';
+import { PLAN_LIMITS, type PlanName } from '@/lib/constants/plans';
 
 interface SseChunk { section: string; content: string; }
 interface GenerateResponse { blueprintId?: string; qualityReport?: QualityReport; error?: string; }
 type SectionMap = Record<string, string>;
+interface UsageSummary {
+  plan: PlanName;
+  generationsUsed: number;
+  generationsLimit: number;
+}
 
 const SECTION_LABELS: Record<string, string> = {
   verse_1: 'Verse 1',
@@ -41,11 +47,26 @@ export default function StudioPage() {
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
   const [statusLines, setStatusLines] = useState<string[]>([]);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [usage, setUsage] = useState<UsageSummary | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [sections]);
+
+  useEffect(() => {
+    const loadUsage = async () => {
+      try {
+        const res = await fetch('/api/usage');
+        if (!res.ok) return;
+        const data = (await res.json()) as UsageSummary;
+        if (data?.plan) setUsage(data);
+      } catch {
+        // non-critical
+      }
+    };
+    void loadUsage();
+  }, []);
 
   const addStatus = (line: string) => setStatusLines((p) => [...p, line]);
 
@@ -143,6 +164,17 @@ export default function StudioPage() {
   };
 
   const hasOutput = sectionOrder.length > 0;
+  const currentPlan = usage?.plan ?? 'FREE';
+  const currentLimits = PLAN_LIMITS[currentPlan];
+  const effectiveCostPerGeneration =
+    currentLimits.generationsPerMonth > 0 && currentLimits.price > 0
+      ? currentLimits.price / 100 / currentLimits.generationsPerMonth
+      : 0;
+  const remainingGenerations = usage
+    ? usage.generationsLimit < 0
+      ? 'Unlimited'
+      : String(Math.max(0, usage.generationsLimit - usage.generationsUsed))
+    : '—';
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', minHeight: '100vh', maxHeight: '100vh' }}>
@@ -263,6 +295,39 @@ export default function StudioPage() {
               ))}
             </div>
           )}
+
+          <div style={{ marginTop: '12px', border: '1px solid var(--border)', borderRadius: '8px', padding: '10px 12px', background: 'var(--bg-elevated)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '10px' }}>
+              <div>
+                <div style={{ fontSize: '10px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>PLAN</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{currentPlan}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>REMAINING GENS</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: 600 }}>{remainingGenerations}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>EST. COST / GEN</div>
+                <div style={{ fontSize: '13px', color: 'var(--accent)', fontWeight: 600 }}>
+                  {effectiveCostPerGeneration > 0 ? `$${effectiveCostPerGeneration.toFixed(2)}` : 'Included'}
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <a
+                href="https://suno.com/create"
+                target="_blank"
+                rel="noreferrer"
+                className="btn"
+                style={{ padding: '8px 12px', borderRadius: '8px', fontSize: '12px', textDecoration: 'none' }}
+              >
+                Open Suno Create ↗
+              </a>
+              <span style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace' }}>
+                Use Suno for audio rendering after package generation
+              </span>
+            </div>
+          </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' }}>
             <span style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace' }}>
