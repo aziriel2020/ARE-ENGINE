@@ -1,81 +1,43 @@
 import { Reveal } from './scroll-reveal';
 
-const DELIVERABLES = [
-  {
-    title: 'Songwriting Architecture',
-    points: ['Story arc and emotional progression', 'Section-by-section lyric structure', 'Hook strategy for replay value'],
-  },
-  {
-    title: 'Production Direction',
-    points: ['BPM / key / arrangement guidance', 'Instrument stack and texture plan', 'Role split for solo, duet, trio, or band'],
-  },
-  {
-    title: 'Generation-Ready Specs',
-    points: ['Prompt blocks for AI music systems', 'Performance intent and vocal direction', 'Regeneration targets if needed'],
-  },
-];
-
-const CHECKS = [
-  'Alignment check against your requested artist direction',
-  'Theme coherence check from intro to outro',
-  'Language and phrasing consistency check',
-  'Arrangement viability check for real production',
-  'Commercial clarity check (hook + payoff)',
-  'Final package formatting check for execution speed',
+const BLOCKS = [
+  'Creative thesis + emotional arc',
+  'Section-by-section songwriting architecture',
+  'Hook strategy + recall moments',
+  'Arrangement intent + instrument strategy',
+  'Role mapping for solo/duet/trio/band',
+  'Performance direction and delivery notes',
+  'Generation prompts for downstream systems',
+  'Quality scoring and improvement targets',
+  'Variation routes for alternate takes',
+  'Execution summary for production teams',
 ];
 
 export function QualitySection() {
   return (
-    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', background: 'var(--bg-elevated)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: "url('/brand/cinematic-waves.svg')", backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.55, pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,8,10,0.76) 0%, rgba(7,8,10,0.9) 100%)', pointerEvents: 'none' }} />
+    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', backgroundImage: "url('/brand/cinematic-waves.svg')", backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative', overflow: 'hidden', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(6,8,12,0.82)' }} />
       <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
         <Reveal>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <div style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              What you get
-            </div>
-            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 4vw, 56px)', fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97, color: 'var(--text-primary)', marginBottom: '16px' }}>
-              A full professional package.
-              <br />
-              <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Not just a draft lyric.
-              </span>
+          <div style={{ textAlign: 'center', marginBottom: 42 }}>
+            <h2 style={{ margin: '0 0 14px', fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(34px, 5vw, 58px)', letterSpacing: '-0.05em', lineHeight: 0.96 }}>
+              Full package. Professional structure.
             </h2>
-            <p style={{ fontSize: '16px', color: 'var(--text-secondary)', lineHeight: 1.75, maxWidth: '740px', margin: '0 auto' }}>
-              Enter two parameters — <strong style={{ color: 'var(--text-primary)' }}>Artist + Theme</strong> — and optionally go deep with your own details. ARE-E returns a production-grade structure built for speed, quality, and execution.
+            <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.75 }}>
+              This is designed to replace scattered creative workflows with one decisive, production-ready system.
             </p>
           </div>
         </Reveal>
 
-        <Reveal delay={60}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', marginBottom: '26px' }}>
-            {DELIVERABLES.map((card) => (
-              <div key={card.title} style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '14px', padding: '24px' }}>
-                <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '20px', letterSpacing: '-0.02em', marginBottom: '14px', color: 'var(--text-primary)' }}>{card.title}</h3>
-                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {card.points.map((point) => (
-                    <li key={point} style={{ display: 'flex', gap: '10px', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.5 }}>
-                      <span style={{ color: 'var(--accent)' }}>✓</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal delay={120}>
-          <div style={{ border: '1px solid var(--border)', borderRadius: '14px', background: 'var(--bg-surface)', padding: '24px' }}>
-            <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>
-              Internal validation before delivery
+        <Reveal delay={80}>
+          <div style={{ border: '1px solid rgba(255,255,255,0.14)', borderRadius: 18, overflow: 'hidden', background: 'rgba(14,18,24,0.72)' }}>
+            <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: 11, fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              10-block generation output
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px 18px' }}>
-              {CHECKS.map((check) => (
-                <div key={check} style={{ display: 'flex', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  <span style={{ color: 'var(--accent)' }}>•</span>
-                  <span>{check}</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)' }}>
+              {BLOCKS.map((item, idx) => (
+                <div key={item} style={{ padding: '14px 18px', borderTop: idx > 1 ? '1px solid rgba(255,255,255,0.06)' : 'none', borderRight: idx % 2 === 0 ? '1px solid rgba(255,255,255,0.06)' : 'none', fontSize: 14, color: 'var(--text-secondary)' }}>
+                  <span style={{ color: 'var(--accent)', marginRight: 8 }}>{String(idx + 1).padStart(2, '0')}</span>{item}
                 </div>
               ))}
             </div>

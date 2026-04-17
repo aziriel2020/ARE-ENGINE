@@ -2,35 +2,23 @@ import Link from 'next/link';
 
 export function CtaSection() {
   return (
-    <section style={{ padding: 'clamp(120px, 14vw, 180px) 32px', position: 'relative', overflow: 'hidden', backgroundImage: "url('/brand/cinematic-waves.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,8,10,0.4) 0%, rgba(7,8,10,0.82) 100%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: '860px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
-        <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '28px' }}>
-          Ready to generate
-        </div>
-
-        <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(44px, 7vw, 90px)', fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 0.92, color: 'var(--text-primary)', marginBottom: '34px' }}>
-          Give two parameters.
+    <section style={{ padding: 'clamp(120px, 14vw, 180px) 32px', position: 'relative', overflow: 'hidden', backgroundImage: "url('/brand/aurora-grid.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,8,10,0.55), rgba(7,8,10,0.86))' }} />
+      <div style={{ maxWidth: '960px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+        <h2 style={{ margin: 0, fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(46px, 8vw, 100px)', letterSpacing: '-0.055em', lineHeight: 0.92 }}>
+          Artist + Theme.
           <br />
-          Receive the full package.
+          <span style={{ background: 'linear-gradient(120deg,#C8FF00 0%, #8DFF2F 45%, #6AE6FF 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Full production package.
+          </span>
         </h2>
-
-        <p style={{ fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.75, maxWidth: '620px', margin: '0 auto 44px' }}>
-          Built for global creation and commercial speed — from singer-songwriter to Hans Zimmer inspired cinematic production concepts.
+        <p style={{ margin: '22px auto 40px', maxWidth: 680, color: 'var(--text-secondary)', fontSize: 18, lineHeight: 1.8 }}>
+          Start with two parameters. Scale to deep direction. Deliver enterprise-grade creative output.
         </p>
-
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-          <Link href="/sign-up" className="btn-primary" style={{ fontSize: '17px', padding: '16px 48px', borderRadius: '10px', fontWeight: 700 }}>
-            Start Free
-          </Link>
-          <Link href="/docs" className="btn-ghost" style={{ fontSize: '15px', padding: '15px 32px', borderRadius: '10px' }}>
-            View System Docs
-          </Link>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <Link href="/sign-up" className="btn-primary" style={{ padding: '16px 42px', borderRadius: 10, fontWeight: 700 }}>Start Now</Link>
+          <Link href="/pricing" className="btn" style={{ padding: '15px 30px', borderRadius: 10 }}>See Pricing</Link>
         </div>
-
-        <p style={{ marginTop: '20px', fontSize: '12px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.06em' }}>
-          Solo · Duet · Trio · Band · Any language · Any genre
-        </p>
       </div>
     </section>
   );
