@@ -31,7 +31,6 @@ export function ProblemSection() {
       overflow: 'hidden',
     }}>
 
-      {/* Subtle red tint top-left, green top-right */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -41,7 +40,6 @@ export function ProblemSection() {
 
       <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
 
-        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '72px' }}>
           <div style={{
             fontSize: '10px',
@@ -52,7 +50,7 @@ export function ProblemSection() {
             marginBottom: '16px',
             opacity: 0.75,
           }}>
-            The Problem
+            Why Every Other Tool Fails You
           </div>
           <h2 style={{
             fontFamily: 'Space Grotesk, sans-serif',
@@ -84,7 +82,6 @@ export function ProblemSection() {
           </h2>
         </div>
 
-        {/* Side-by-side comparison */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 80px 1fr',
@@ -100,7 +97,6 @@ export function ProblemSection() {
             borderRadius: '12px 0 0 12px',
             overflow: 'hidden',
           }}>
-            {/* Card header */}
             <div style={{
               padding: '14px 20px',
               borderBottom: '1px solid rgba(255,59,92,0.1)',
@@ -110,46 +106,28 @@ export function ProblemSection() {
               gap: '8px',
             }}>
               <div style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
+                width: '20px', height: '20px', borderRadius: '50%',
                 border: '1.5px solid rgba(255,59,92,0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <span style={{ color: 'var(--error)', fontSize: '11px', lineHeight: 1 }}>✕</span>
               </div>
               <span style={{
-                fontSize: '11px',
-                fontFamily: 'IBM Plex Mono, monospace',
-                color: 'var(--error)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                opacity: 0.8,
+                fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace',
+                color: 'var(--error)', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8,
               }}>
-                Generic AI Tool
+                Any Generic AI Tool
               </span>
               <span style={{
-                marginLeft: 'auto',
-                fontSize: '10px',
-                fontFamily: 'IBM Plex Mono, monospace',
-                color: 'rgba(255,59,92,0.4)',
-                padding: '2px 6px',
-                border: '1px solid rgba(255,59,92,0.15)',
-                borderRadius: '3px',
+                marginLeft: 'auto', fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
+                color: 'rgba(255,59,92,0.4)', padding: '2px 6px',
+                border: '1px solid rgba(255,59,92,0.15)', borderRadius: '3px',
               }}>
-                No DNA
+                No Identity
               </span>
             </div>
 
-            {/* Fake lyrics */}
-            <div style={{
-              padding: '24px 24px',
-              fontFamily: 'IBM Plex Mono, monospace',
-              fontSize: '12.5px',
-              lineHeight: 2,
-            }}>
+            <div style={{ padding: '24px', fontFamily: 'IBM Plex Mono, monospace', fontSize: '12.5px', lineHeight: 2 }}>
               {BEFORE_LINES.map((line, i) => (
                 <div key={i} style={{
                   color: 'label' in line ? line.color : line.color,
@@ -164,56 +142,30 @@ export function ProblemSection() {
               ))}
             </div>
 
-            {/* Footer */}
             <div style={{
-              margin: '0 20px 20px',
-              padding: '12px 16px',
-              background: 'rgba(255,59,92,0.06)',
-              border: '1px solid rgba(255,59,92,0.12)',
-              borderRadius: '7px',
+              margin: '0 20px 20px', padding: '12px 16px',
+              background: 'rgba(255,59,92,0.06)', border: '1px solid rgba(255,59,92,0.12)', borderRadius: '7px',
             }}>
               <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'rgba(255,59,92,0.6)', marginBottom: '4px' }}>
-                ✕ ISSUES DETECTED
+                ✕ QUALITY CHECK FAILED
               </div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                Clichés · No identity mapping · Could be anyone&apos;s lyrics
+                Clichés detected · No voice mapping · Could be anyone
               </div>
             </div>
           </div>
 
           {/* Center divider */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            position: 'relative',
-          }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', position: 'relative' }}>
+            <div style={{ width: '1px', flex: 1, background: 'linear-gradient(to bottom, transparent, var(--border), transparent)' }} />
             <div style={{
-              width: '1px',
-              flex: 1,
-              background: 'linear-gradient(to bottom, transparent, var(--border), transparent)',
-            }} />
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-hover)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              zIndex: 1,
+              width: '40px', height: '40px', borderRadius: '50%',
+              background: 'var(--bg-surface)', border: '1px solid var(--border-hover)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1,
             }}>
               <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)' }}>VS</span>
             </div>
-            <div style={{
-              width: '1px',
-              flex: 1,
-              background: 'linear-gradient(to bottom, transparent, var(--border), transparent)',
-            }} />
+            <div style={{ width: '1px', flex: 1, background: 'linear-gradient(to bottom, transparent, var(--border), transparent)' }} />
           </div>
 
           {/* AFTER card */}
@@ -224,55 +176,33 @@ export function ProblemSection() {
             overflow: 'hidden',
             boxShadow: '0 0 40px rgba(200,255,0,0.04)',
           }}>
-            {/* Card header */}
             <div style={{
-              padding: '14px 20px',
-              borderBottom: '1px solid rgba(200,255,0,0.12)',
-              background: 'rgba(200,255,0,0.04)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
+              padding: '14px 20px', borderBottom: '1px solid rgba(200,255,0,0.12)',
+              background: 'rgba(200,255,0,0.04)', display: 'flex', alignItems: 'center', gap: '8px',
             }}>
               <div style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
+                width: '20px', height: '20px', borderRadius: '50%',
                 border: '1.5px solid rgba(200,255,0,0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <span style={{ color: 'var(--accent)', fontSize: '10px', lineHeight: 1 }}>✓</span>
               </div>
               <span style={{
-                fontSize: '11px',
-                fontFamily: 'IBM Plex Mono, monospace',
-                color: 'var(--accent)',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
+                fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace',
+                color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase',
               }}>
                 ARE-E Engine
               </span>
               <span style={{
-                marginLeft: 'auto',
-                fontSize: '10px',
-                fontFamily: 'IBM Plex Mono, monospace',
-                color: 'rgba(200,255,0,0.6)',
-                padding: '2px 6px',
-                border: '1px solid rgba(200,255,0,0.2)',
-                borderRadius: '3px',
+                marginLeft: 'auto', fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
+                color: 'rgba(200,255,0,0.6)', padding: '2px 6px',
+                border: '1px solid rgba(200,255,0,0.2)', borderRadius: '3px',
               }}>
                 DNA v2.3
               </span>
             </div>
 
-            {/* ARE-E lyrics */}
-            <div style={{
-              padding: '24px 24px',
-              fontFamily: 'IBM Plex Mono, monospace',
-              fontSize: '12.5px',
-              lineHeight: 2,
-            }}>
+            <div style={{ padding: '24px', fontFamily: 'IBM Plex Mono, monospace', fontSize: '12.5px', lineHeight: 2 }}>
               {AFTER_LINES.map((line, i) => (
                 <div key={i} style={{
                   color: 'label' in line ? line.color : line.color,
@@ -286,32 +216,20 @@ export function ProblemSection() {
               ))}
             </div>
 
-            {/* Footer */}
             <div style={{
-              margin: '0 20px 20px',
-              padding: '12px 16px',
-              background: 'rgba(200,255,0,0.04)',
-              border: '1px solid rgba(200,255,0,0.12)',
-              borderRadius: '7px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              margin: '0 20px 20px', padding: '12px 16px',
+              background: 'rgba(200,255,0,0.04)', border: '1px solid rgba(200,255,0,0.12)',
+              borderRadius: '7px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
               <div>
                 <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', marginBottom: '4px' }}>
-                  ✓ QUALITY REPORT
+                  ✓ 28-LAW QUALITY REPORT
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                  DNA matched · 25/28 laws passed
+                  Voice matched · 25/28 laws passed · Grade A
                 </div>
               </div>
-              <div style={{
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: '28px',
-                color: 'var(--success)',
-                letterSpacing: '-0.04em',
-              }}>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '28px', color: 'var(--success)', letterSpacing: '-0.04em' }}>
                 A
               </div>
             </div>
@@ -320,58 +238,34 @@ export function ProblemSection() {
 
         {/* Three problem callouts */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1px',
-          background: 'var(--border)',
-          borderRadius: '12px',
-          overflow: 'hidden',
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1px', background: 'var(--border)', borderRadius: '12px', overflow: 'hidden',
         }}>
           {[
             {
               num: '01',
-              title: 'Zero identity mapping',
-              body: 'ChatGPT generates the same hollow verses for Drake and a 17-year-old bedroom producer. No model knows your metaphor frequency.',
+              title: 'It sounds like everyone\'s first draft',
+              body: 'ChatGPT writes the same hollow verse for a platinum artist and a bedroom producer. It has no concept of your vocabulary, your emotional axis, or what makes you sound like you.',
             },
             {
               num: '02',
-              title: 'No quality feedback loop',
-              body: 'Other tools give you output and walk away. ARE-E scores every blueprint against 28 laws with grades and per-law reasoning.',
+              title: 'You get output. You never get better.',
+              body: 'Every other tool hands you lyrics and disappears. ARE-E scores every blueprint against 28 quality laws, shows you exactly what passed and what failed, and re-generates the weak sections automatically.',
             },
             {
               num: '03',
-              title: 'Your style degrades',
-              body: 'Generic AI tools erode your voice over time. DNA profiles grow richer with usage — the opposite of homogenization.',
+              title: 'The more you use AI, the less you sound like yourself.',
+              body: 'Generic tools erode your voice into the average. ARE-E Vocal DNA profiles grow richer, sharper, and more precise with every generation. Compounding identity — not dilution.',
             },
           ].map((item, i) => (
-            <div key={i} style={{
-              padding: '28px 24px',
-              background: 'var(--bg-elevated)',
-            }}>
-              <div style={{
-                fontFamily: 'IBM Plex Mono, monospace',
-                fontSize: '11px',
-                color: 'var(--text-ghost)',
-                letterSpacing: '0.1em',
-                marginBottom: '12px',
-              }}>
+            <div key={i} style={{ padding: '28px 24px', background: 'var(--bg-elevated)' }}>
+              <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-ghost)', letterSpacing: '0.1em', marginBottom: '12px' }}>
                 {item.num}
               </div>
-              <h3 style={{
-                fontFamily: 'Space Grotesk, sans-serif',
-                fontSize: '16px',
-                fontWeight: 600,
-                letterSpacing: '-0.03em',
-                color: 'var(--text-primary)',
-                marginBottom: '10px',
-              }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px', fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--text-primary)', marginBottom: '10px' }}>
                 {item.title}
               </h3>
-              <p style={{
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.75,
-              }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.75 }}>
                 {item.body}
               </p>
             </div>

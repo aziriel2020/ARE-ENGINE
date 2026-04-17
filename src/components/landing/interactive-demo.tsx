@@ -194,10 +194,11 @@ export function InteractiveDemo() {
               color: 'var(--text-primary)',
               marginBottom: '16px',
             }}>
-              Watch it happen in real-time
+              See your voice in the machine.
             </h2>
             <p style={{ fontSize: '15px', color: 'var(--text-secondary)', maxWidth: '480px', margin: '0 auto', lineHeight: 1.7 }}>
-              Pick an artist profile and run the full pipeline — DNA extraction, generation, and 28-law scoring.
+              Choose a style profile. Watch ARE-E extract the voice DNA, stream a full blueprint live,
+              and score it against 28 laws in under 4 minutes. No setup. No waiting.
             </p>
           </div>
         </Reveal>

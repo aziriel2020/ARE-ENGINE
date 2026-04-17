@@ -35,10 +35,10 @@ const TOKEN_COLORS: Record<string, string> = {
 };
 
 const FEATURES = [
-  { icon: '◈', title: 'Full REST + Streaming', desc: 'Every endpoint available over HTTP and SSE for real-time delta output.' },
-  { icon: '◉', title: 'Node & Python SDKs', desc: 'Type-safe clients with full autocomplete on all parameters and responses.' },
-  { icon: '▶', title: 'Webhook Events', desc: 'Subscribe to generation, scoring, and grade events via webhooks.' },
-  { icon: '⌘', title: 'Batch Generation', desc: 'Submit up to 50 blueprints in a single request with async callback.' },
+  { icon: '◈', title: 'REST + Real-time Streaming', desc: 'Every endpoint over HTTP and SSE — stream blueprints word by word into your own UI.' },
+  { icon: '◉', title: 'Node & Python SDKs', desc: 'Type-safe clients, full autocomplete, zero boilerplate on voice profiles and generations.' },
+  { icon: '▶', title: 'Webhook Events', desc: 'Fire on generation start, scoring complete, grade assigned — build reactive pipelines.' },
+  { icon: '⌘', title: 'Batch Generation', desc: 'Submit 50 blueprints in one call with async callbacks — built for production at scale.' },
 ];
 
 export function ApiSection() {
@@ -107,9 +107,9 @@ export function ApiSection() {
                 lineHeight: 1.8,
                 marginBottom: '40px',
               }}>
-                The full pipeline — DNA extraction, blueprint generation, 28-law scoring,
-                and grade assignment — accessible as a first-class API with streaming and
-                batch support.
+                Every part of the pipeline — voice mapping, blueprint generation, 28-law
+                quality scoring, grade assignment — exposed as a first-class API. Build
+                voice-aware music tools without rebuilding the infrastructure.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

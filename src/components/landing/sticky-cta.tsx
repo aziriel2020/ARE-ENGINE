@@ -56,7 +56,7 @@ export function StickyCta() {
           fontFamily: 'IBM Plex Mono, monospace',
           letterSpacing: '0.02em',
         }}>
-          Start free — no credit card required
+          Your first blueprint is free — no card needed
         </span>
 
         <Link href="/sign-up" className="btn-primary" style={{ fontSize: '13px', padding: '8px 22px', borderRadius: '99px' }}>

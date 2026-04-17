@@ -10,12 +10,12 @@ const TIERS = [
     tag: 'FREE',
     monthlyPrice: 0,
     period: '/mo',
-    subtitle: 'Explore the engine',
+    subtitle: 'Map your voice, test the engine',
     features: [
-      '5 generations / month',
-      '1 Vocal DNA profile',
-      'Gemini 2.5 Flash model',
-      'Text export',
+      '5 complete song blueprints / month',
+      '1 voice profile — map your identity',
+      'Powered by Gemini 2.5 Flash',
+      'Export your blueprints as text',
       'Community support',
     ],
     cta: 'Start Free',
@@ -28,16 +28,16 @@ const TIERS = [
     tag: 'PRO',
     monthlyPrice: 299,
     period: '/mo',
-    subtitle: 'For serious artists',
+    subtitle: 'The full experience — for artists who are serious',
     features: [
-      '100 generations / month',
-      '5 Vocal DNA profiles',
-      'Gemini 2.5 Pro flagship model',
-      '28-Law quality scoring',
-      'Blueprint history & versioning',
-      'TXT / MD / PDF export',
-      '2 API keys',
-      '14-day free trial',
+      '100 song blueprints / month',
+      '5 voice profiles — write for multiple artists',
+      'Flagship Gemini 2.5 Pro model',
+      'Full 28-law quality scoring + grades',
+      'Every draft saved, versioned, comparable',
+      'Export as TXT, PDF, or Markdown',
+      '2 API keys — start building',
+      '14-day free trial — no card required',
     ],
     cta: 'Start 14-day Trial',
     href: '/sign-up',
@@ -49,14 +49,14 @@ const TIERS = [
     tag: 'STUDIO',
     monthlyPrice: 799,
     period: '/mo',
-    subtitle: 'For studios & teams',
+    subtitle: 'Scale your creative roster',
     features: [
-      '500 generations / month',
-      '20 Vocal DNA profiles',
-      'Flagship model + context cache',
-      'All export formats + DOCX + JSON',
-      '10 API keys · 5 webhooks',
-      'Priority support',
+      '500 blueprints / month',
+      '20 voice profiles — your full roster',
+      'Gemini 2.5 Pro + 90% cost reduction via cache',
+      'Every export format including DOCX + JSON',
+      '10 API keys + 5 webhooks',
+      'Priority support with 24h response',
       '14-day free trial',
     ],
     cta: 'Start Trial',
@@ -69,14 +69,14 @@ const TIERS = [
     tag: 'ENTERPRISE',
     monthlyPrice: 2999,
     period: '/mo',
-    subtitle: 'For labels & platforms',
+    subtitle: 'Build the infrastructure — for labels and platforms',
     features: [
-      'Unlimited generations',
-      'Unlimited DNA profiles',
-      'Unlimited API keys & webhooks',
-      'API-first access',
-      'Dedicated support & SLA',
-      '30-day free trial',
+      'Unlimited blueprints — no caps, ever',
+      'Unlimited voice profiles',
+      'Unlimited API keys and webhooks',
+      'API-first — full programmatic control',
+      'Dedicated support + uptime SLA',
+      '30-day pilot — prove it works',
     ],
     cta: 'Contact Sales',
     href: '/sign-up',
@@ -138,7 +138,7 @@ export function PricingSection() {
               color: 'var(--text-primary)',
               marginBottom: '40px',
             }}>
-              93–97% margin per generation.
+              Start free. Scale when
               <br />
               <span style={{
                 background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)',
@@ -146,7 +146,7 @@ export function PricingSection() {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
               }}>
-                Yours gets passed on.
+                you&apos;re ready.
               </span>
             </h2>
 

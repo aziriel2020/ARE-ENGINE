@@ -30,7 +30,7 @@ export function LogoStrip() {
         letterSpacing: '0.14em',
         textTransform: 'uppercase',
       }}>
-        Trusted by artists & teams
+        The platform serious artists trust to stay original
       </div>
 
       <div className="marquee-track">
