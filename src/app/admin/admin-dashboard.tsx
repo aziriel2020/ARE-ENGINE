@@ -1,207 +1,310 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { PLAN_LIMITS, type PlanName, formatPrice } from '@/lib/constants/plans';
+import { MODELS } from '@/lib/engine/ai-router';
 
-interface AdminStats {
+interface AdminStatsApi {
   totalUsers: number;
   activeUsers: number;
   payingUsers: number;
-  mrr: number;
-  totalGenerations: number;
-  aiCostMonth: number;
-  avgQualityScore: number;
+  totalGenerationsThisMonth: number;
+  aiCostThisMonth: number;
+  currentPeriod?: string;
 }
 
-const MOCK_STATS: AdminStats = {
-  totalUsers: 1_247,
-  activeUsers: 389,
-  payingUsers: 87,
-  mrr: 24_613,
-  totalGenerations: 8_941,
-  aiCostMonth: 892,
-  avgQualityScore: 82,
-};
-
-// SVG bar chart for quick stats
-function MiniBar({ value, max, color }: { value: number; max: number; color: string }) {
-  const pct = Math.min(100, (value / max) * 100);
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <div style={{ flex: 1, height: '4px', background: 'var(--border)', borderRadius: '2px', overflow: 'hidden' }}>
-        <div style={{ width: `${pct}%`, height: '100%', background: color }} />
-      </div>
-      <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '10px', color: 'var(--text-tertiary)', minWidth: '32px', textAlign: 'right' }}>
-        {value.toLocaleString()}
-      </span>
-    </div>
-  );
+interface AdminCostsApi {
+  totalCostThisMonth: number;
+  avgCostPerGeneration: number;
+  cacheHitRate: number;
+  modelBreakdown: Array<{ model: string; generations: number; totalCost: number; avgCost: number }>;
 }
 
-interface MockUser {
+interface AdminUser {
   id: string;
   email: string;
-  plan: string;
-  generationsThisMonth: number;
-  lastActive: string;
+  plan: PlanName;
+  createdAt: string;
+  orgId?: string | null;
+  trialEndsAt?: string | null;
+  _count?: { blueprints?: number };
 }
 
-const MOCK_USERS: MockUser[] = [
-  { id: 'u1', email: 'artist@example.com', plan: 'PRO', generationsThisMonth: 47, lastActive: '2026-04-12' },
-  { id: 'u2', email: 'studio@label.fr', plan: 'STUDIO', generationsThisMonth: 312, lastActive: '2026-04-13' },
-  { id: 'u3', email: 'indie@music.io', plan: 'PRO', generationsThisMonth: 23, lastActive: '2026-04-10' },
-  { id: 'u4', email: 'beatmaker@gmail.com', plan: 'FREE', generationsThisMonth: 5, lastActive: '2026-04-08' },
-  { id: 'u5', email: 'corp@enterprise.com', plan: 'ENTERPRISE', generationsThisMonth: 1_240, lastActive: '2026-04-13' },
+interface ApiRow {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  path: string;
+  purpose: string;
+  auth: string;
+}
+
+const API_ROWS: ApiRow[] = [
+  { method: 'POST', path: '/api/generate', purpose: 'Run full generation pipeline', auth: 'User/API Key' },
+  { method: 'POST', path: '/api/generate/score', purpose: 'Quality score a package', auth: 'User/API Key' },
+  { method: 'POST', path: '/api/generate/regenerate', purpose: 'Targeted section regeneration', auth: 'User/API Key' },
+  { method: 'GET', path: '/api/usage', purpose: 'Current usage + limits', auth: 'User/API Key' },
+  { method: 'GET', path: '/api/usage/costs', purpose: 'Per-generation costs', auth: 'User/API Key' },
+  { method: 'GET', path: '/api/admin/stats', purpose: 'Platform KPI aggregation', auth: 'Admin only' },
+  { method: 'GET', path: '/api/admin/users', purpose: 'User management feed', auth: 'Admin only' },
+  { method: 'GET', path: '/api/admin/costs', purpose: 'Model spend analytics', auth: 'Admin only' },
+  { method: 'GET', path: '/api/health', purpose: 'Service health check', auth: 'Public' },
 ];
 
-const PLAN_COLORS: Record<string, string> = {
-  FREE: 'var(--text-tertiary)',
-  PRO: 'var(--accent)',
-  STUDIO: 'var(--info)',
-  ENTERPRISE: 'var(--success)',
+const METHOD_COLOR: Record<ApiRow['method'], string> = {
+  GET: 'var(--info)',
+  POST: 'var(--success)',
+  PUT: 'var(--warning)',
+  DELETE: 'var(--error)',
 };
 
 export function AdminDashboard() {
-  const [stats, setStats] = useState<AdminStats>(MOCK_STATS);
-  const [users, setUsers] = useState<MockUser[]>(MOCK_USERS);
+  const [tab, setTab] = useState<'overview' | 'users' | 'costs' | 'apis' | 'settings'>('overview');
+  const [loading, setLoading] = useState(true);
+
+  const [stats, setStats] = useState<AdminStatsApi | null>(null);
+  const [costs, setCosts] = useState<AdminCostsApi | null>(null);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'costs'>('overview');
-  const [loading, setLoading] = useState(false);
+
+  const [apiStatus, setApiStatus] = useState<Record<string, 'ok' | 'warn' | 'down'>>({});
+  const [featureFlags, setFeatureFlags] = useState({
+    generationEnabled: true,
+    adminWritesEnabled: false,
+    strictRateLimit: true,
+    costGuardrails: true,
+  });
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
       try {
-        const [statsRes, usersRes] = await Promise.all([
+        const [statsRes, usersRes, costsRes] = await Promise.all([
           fetch('/api/admin/stats'),
-          fetch('/api/admin/users'),
+          fetch('/api/admin/users?limit=100'),
+          fetch('/api/admin/costs'),
         ]);
-        if (statsRes.ok) setStats((await statsRes.json()) as AdminStats);
+
+        if (statsRes.ok) setStats((await statsRes.json()) as AdminStatsApi);
+        if (costsRes.ok) setCosts((await costsRes.json()) as AdminCostsApi);
+
         if (usersRes.ok) {
-          const data = (await usersRes.json()) as { users?: MockUser[] };
-          if (data.users) setUsers(data.users);
+          const payload = (await usersRes.json()) as { data?: AdminUser[] };
+          setUsers(payload.data ?? []);
         }
-      } catch {
-        // Use mock data on failure
       } finally {
         setLoading(false);
       }
     };
+
+    const probeApis = async () => {
+      const checks = await Promise.all(
+        API_ROWS.map(async (row) => {
+          try {
+            const res = await fetch(row.path, { method: row.method === 'GET' ? 'GET' : 'OPTIONS' });
+            if (res.status >= 200 && res.status < 300) return [row.path, 'ok'] as const;
+            if (res.status === 401 || res.status === 403 || res.status === 405) return [row.path, 'warn'] as const;
+            return [row.path, 'down'] as const;
+          } catch {
+            return [row.path, 'down'] as const;
+          }
+        })
+      );
+      setApiStatus(Object.fromEntries(checks));
+    };
+
     void load();
+    void probeApis();
   }, []);
 
-  const filteredUsers = users.filter((u) =>
-    u.email.toLowerCase().includes(search.toLowerCase()) ||
-    u.plan.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredUsers = useMemo(() => {
+    return users.filter((u) => {
+      const q = search.toLowerCase();
+      return !q || u.email.toLowerCase().includes(q) || u.plan.toLowerCase().includes(q);
+    });
+  }, [users, search]);
 
-  const margin = stats.mrr > 0 ? Math.round(((stats.mrr - stats.aiCostMonth) / stats.mrr) * 100) : 0;
+  const mrrEstimate = useMemo(() => {
+    return users.reduce((sum, u) => sum + PLAN_LIMITS[u.plan].price, 0) / 100;
+  }, [users]);
+
+  const margin = useMemo(() => {
+    if (!stats?.aiCostThisMonth || mrrEstimate <= 0) return 0;
+    return Math.round(((mrrEstimate - stats.aiCostThisMonth) / mrrEstimate) * 100);
+  }, [stats, mrrEstimate]);
 
   return (
-    <div style={{ padding: '32px' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+    <div style={{ padding: '28px 30px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '26px' }}>
         <div>
-          <h1 style={{ fontFamily: 'Space Mono, monospace', fontSize: '20px', marginBottom: '4px' }}>Admin Dashboard</h1>
-          <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace' }}>
-            ⚡ INTERNAL — DO NOT SHARE
+          <h1 style={{ margin: '0 0 4px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '26px', letterSpacing: '-0.04em' }}>
+            ARE-E Command Center
+          </h1>
+          <p style={{ margin: 0, fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>
+            ADMIN / PLATFORM / API / COMMERCIAL CONTROL
           </p>
         </div>
         <span style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace' }}>
-          Last refreshed: now
+          {loading ? 'Refreshing…' : `Period: ${stats?.currentPeriod ?? 'live'}`}
         </span>
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: '24px' }}>
-        {(['overview', 'users', 'costs'] as const).map((tab) => (
-          <button key={tab} onClick={() => setActiveTab(tab)} style={{ padding: '8px 20px', background: 'none', border: 'none', borderBottom: `2px solid ${activeTab === tab ? 'var(--accent)' : 'transparent'}`, color: activeTab === tab ? 'var(--text-primary)' : 'var(--text-secondary)', fontSize: '13px', cursor: 'pointer', textTransform: 'capitalize' }}>
-            {tab}
+      <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: '20px', gap: 8 }}>
+        {(['overview', 'users', 'costs', 'apis', 'settings'] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            style={{
+              padding: '9px 14px',
+              background: 'none',
+              border: 'none',
+              borderBottom: `2px solid ${tab === t ? 'var(--accent)' : 'transparent'}`,
+              color: tab === t ? 'var(--text-primary)' : 'var(--text-secondary)',
+              textTransform: 'capitalize',
+              cursor: 'pointer',
+              fontSize: '13px',
+            }}
+          >
+            {t}
           </button>
         ))}
       </div>
 
-      {activeTab === 'overview' && (
-        <>
-          {/* KPI grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+      {tab === 'overview' && (
+        <div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))', gap: '12px', marginBottom: '22px' }}>
             {[
-              { label: 'Total Users', value: stats.totalUsers.toLocaleString(), color: 'var(--text-primary)' },
-              { label: 'Active (30d)', value: stats.activeUsers.toLocaleString(), color: 'var(--info)' },
-              { label: 'Paying', value: stats.payingUsers.toLocaleString(), color: 'var(--success)' },
-              { label: 'MRR', value: `$${stats.mrr.toLocaleString()}`, color: 'var(--accent)' },
-              { label: 'AI Cost (mo)', value: `$${stats.aiCostMonth.toLocaleString()}`, color: 'var(--warning)' },
-              { label: 'Margin', value: `${margin}%`, color: 'var(--success)' },
-              { label: 'Generations', value: stats.totalGenerations.toLocaleString(), color: 'var(--info)' },
-              { label: 'Avg Quality', value: `${stats.avgQualityScore}/100`, color: 'var(--accent)' },
-            ].map((kpi) => (
-              <div key={kpi.label} className="card">
-                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '8px' }}>{kpi.label}</div>
-                <div style={{ fontFamily: 'Space Mono, monospace', fontSize: '22px', fontWeight: 700, color: kpi.color }}>{kpi.value}</div>
+              ['Users', (stats?.totalUsers ?? users.length).toLocaleString(), 'var(--text-primary)'],
+              ['Active 30d', (stats?.activeUsers ?? 0).toLocaleString(), 'var(--info)'],
+              ['Paying', (stats?.payingUsers ?? 0).toLocaleString(), 'var(--success)'],
+              ['MRR (est.)', `$${mrrEstimate.toLocaleString()}`, 'var(--accent)'],
+              ['AI Cost (mo)', `$${(stats?.aiCostThisMonth ?? 0).toFixed(2)}`, 'var(--warning)'],
+              ['Margin', `${margin}%`, 'var(--success)'],
+              ['Generations (mo)', (stats?.totalGenerationsThisMonth ?? 0).toLocaleString(), 'var(--info)'],
+              ['Cache hit rate', `${Math.round((costs?.cacheHitRate ?? 0) * 100)}%`, 'var(--accent)'],
+            ].map(([label, value, color]) => (
+              <div key={label} className="card">
+                <div style={{ fontSize: '10px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '7px' }}>{label}</div>
+                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '22px', fontWeight: 700, color: String(color), letterSpacing: '-0.03em' }}>{value}</div>
               </div>
             ))}
           </div>
 
-          {/* Conversion funnel */}
-          <div className="card" style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontFamily: 'Space Mono, monospace', fontSize: '13px', marginBottom: '16px', color: 'var(--text-secondary)' }}>CONVERSION FUNNEL</h3>
-            {[
-              { label: 'Signups', value: stats.totalUsers, max: stats.totalUsers },
-              { label: 'Onboarding complete', value: Math.round(stats.totalUsers * 0.73), max: stats.totalUsers },
-              { label: 'First generation', value: Math.round(stats.totalUsers * 0.58), max: stats.totalUsers },
-              { label: 'Upgraded to paid', value: stats.payingUsers, max: stats.totalUsers },
-            ].map((step) => (
-              <div key={step.label} style={{ marginBottom: '12px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{step.label}</span>
-                  <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-tertiary)' }}>
-                    {Math.round((step.value / step.max) * 100)}%
-                  </span>
-                </div>
-                <MiniBar value={step.value} max={step.max} color="var(--accent)" />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {activeTab === 'users' && (
-        <>
-          <div style={{ marginBottom: '16px' }}>
-            <input className="input" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by email or plan..." style={{ maxWidth: '400px' }} />
-          </div>
-
-          <div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 100px', gap: '16px', padding: '8px 16px' }}>
-              {['EMAIL', 'PLAN', 'GENS', 'LAST ACTIVE'].map((h) => (
-                <span key={h} className="table-header">{h}</span>
-              ))}
+          <div className="card" style={{ marginBottom: '12px' }}>
+            <h3 style={{ margin: '0 0 10px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px' }}>Revenue by Plan</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '10px' }}>
+              {(Object.keys(PLAN_LIMITS) as PlanName[]).map((plan) => {
+                const count = users.filter((u) => u.plan === plan).length;
+                const monthly = (PLAN_LIMITS[plan].price / 100) * count;
+                return (
+                  <div key={plan} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 12, background: 'var(--bg-elevated)' }}>
+                    <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)', marginBottom: 6 }}>{plan}</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>${monthly.toLocaleString()}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>{count} accounts</div>
+                  </div>
+                );
+              })}
             </div>
-            {loading && <div style={{ padding: '24px', textAlign: 'center', color: 'var(--accent)', fontFamily: 'IBM Plex Mono, monospace', fontSize: '12px' }}><span className="spin-glyph">◈</span></div>}
-            {filteredUsers.map((u) => (
-              <div key={u.id} className="table-row" style={{ display: 'grid', gridTemplateColumns: '1fr 80px 80px 100px', gap: '16px', padding: '12px 16px' }}>
-                <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{u.email}</span>
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: PLAN_COLORS[u.plan] ?? 'var(--text-secondary)', letterSpacing: '0.05em' }}>{u.plan}</span>
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '12px', color: 'var(--text-secondary)' }}>{u.generationsThisMonth}</span>
-                <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-tertiary)' }}>{u.lastActive}</span>
-              </div>
-            ))}
           </div>
-        </>
+        </div>
       )}
 
-      {activeTab === 'costs' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-          {[
-            { model: 'Gemini 3.1 Pro', calls: 742, cost: `$${(742 * 0.227).toFixed(0)}`, pct: '83%' },
-            { model: 'Gemini 2.5 Flash', calls: 312, cost: `$${(312 * 0.008).toFixed(0)}`, pct: '15%' },
-            { model: 'Claude Sonnet 4.6', calls: 23, cost: `$${(23 * 0.15).toFixed(0)}`, pct: '2%' },
-          ].map((m) => (
-            <div key={m.model} className="card">
-              <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-tertiary)', marginBottom: '8px' }}>{m.model}</div>
-              <div style={{ fontFamily: 'Space Mono, monospace', fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>{m.cost}</div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{m.calls} calls · {m.pct} of spend</div>
+      {tab === 'users' && (
+        <div>
+          <input
+            className="input"
+            placeholder="Search by email or plan"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ maxWidth: '420px', marginBottom: '12px' }}
+          />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 140px', gap: '16px', padding: '8px 16px' }}>
+            {['EMAIL', 'PLAN', 'BLUEPRINTS', 'CREATED'].map((h) => (
+              <span key={h} className="table-header">{h}</span>
+            ))}
+          </div>
+          {filteredUsers.map((u) => (
+            <div key={u.id} className="table-row" style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 140px', gap: '16px', padding: '12px 16px' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{u.email}</span>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: u.plan === 'FREE' ? 'var(--text-tertiary)' : 'var(--accent)' }}>{u.plan}</span>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '12px', color: 'var(--text-secondary)' }}>{u._count?.blueprints ?? 0}</span>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-tertiary)' }}>{new Date(u.createdAt).toISOString().slice(0, 10)}</span>
             </div>
           ))}
+        </div>
+      )}
+
+      {tab === 'costs' && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '12px' }}>
+          {(costs?.modelBreakdown ?? []).map((m) => (
+            <div key={m.model} className="card">
+              <div style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', marginBottom: 6 }}>{m.model}</div>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '24px', fontWeight: 700, marginBottom: 5 }}>${m.totalCost.toFixed(2)}</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{m.generations} generations</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>avg ${m.avgCost.toFixed(4)} / generation</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === 'apis' && (
+        <div>
+          <div style={{ display: 'grid', gridTemplateColumns: '80px 260px 1fr 120px 90px', gap: '16px', padding: '8px 16px' }}>
+            {['METHOD', 'PATH', 'PURPOSE', 'AUTH', 'STATUS'].map((h) => (
+              <span key={h} className="table-header">{h}</span>
+            ))}
+          </div>
+          {API_ROWS.map((row) => (
+            <div key={row.path} className="table-row" style={{ display: 'grid', gridTemplateColumns: '80px 260px 1fr 120px 90px', gap: '16px', padding: '12px 16px', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: METHOD_COLOR[row.method] }}>{row.method}</span>
+              <code style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '12px', color: 'var(--text-primary)' }}>{row.path}</code>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{row.purpose}</span>
+              <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)' }}>{row.auth}</span>
+              <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: apiStatus[row.path] === 'ok' ? 'var(--success)' : apiStatus[row.path] === 'warn' ? 'var(--warning)' : 'var(--error)' }}>
+                {(apiStatus[row.path] ?? 'down').toUpperCase()}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === 'settings' && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div className="card">
+            <h3 style={{ margin: '0 0 10px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px' }}>Feature Controls</h3>
+            {(Object.keys(featureFlags) as Array<keyof typeof featureFlags>).map((key) => (
+              <label key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: '1px solid var(--border-subtle)' }}>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{key}</span>
+                <input
+                  type="checkbox"
+                  checked={featureFlags[key]}
+                  onChange={(e) => setFeatureFlags((prev) => ({ ...prev, [key]: e.target.checked }))}
+                />
+              </label>
+            ))}
+          </div>
+
+          <div className="card">
+            <h3 style={{ margin: '0 0 10px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px' }}>Model Routing</h3>
+            {Object.entries(MODELS).map(([tier, cfg]) => (
+              <div key={tier} style={{ padding: '10px 0', borderBottom: '1px solid var(--border-subtle)' }}>
+                <div style={{ fontSize: '12px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)' }}>{tier.toUpperCase()}</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>{cfg.model}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>${cfg.inputCostPer1M}/$ {cfg.outputCostPer1M} per 1M tokens</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="card" style={{ gridColumn: '1 / -1' }}>
+            <h3 style={{ margin: '0 0 10px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px' }}>Commercial Plan Matrix</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10 }}>
+              {(Object.keys(PLAN_LIMITS) as PlanName[]).map((plan) => (
+                <div key={plan} style={{ border: '1px solid var(--border)', borderRadius: 10, padding: 12 }}>
+                  <div style={{ fontSize: 12, fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', marginBottom: 4 }}>{plan}</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 5 }}>{formatPrice(PLAN_LIMITS[plan].price)}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>{PLAN_LIMITS[plan].generationsPerMonth < 0 ? 'Unlimited' : PLAN_LIMITS[plan].generationsPerMonth} gens / month</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
