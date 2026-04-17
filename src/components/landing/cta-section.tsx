@@ -2,108 +2,97 @@ import Link from 'next/link';
 
 export function CtaSection() {
   return (
-    <section style={{ padding: 'clamp(96px, 12vw, 160px) 32px', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ padding: 'clamp(120px, 14vw, 180px) 32px', position: 'relative', overflow: 'hidden' }}>
 
       <div style={{
         position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: '900px', height: '700px',
-        background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.08) 0%, rgba(200,255,0,0.025) 40%, transparent 70%)',
+        width: '1000px', height: '800px',
+        background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.09) 0%, rgba(200,255,0,0.03) 40%, transparent 70%)',
         pointerEvents: 'none',
       }} />
-
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: `
-          linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)
-        `,
-        backgroundSize: '64px 64px',
-        maskImage: 'radial-gradient(ellipse 80% 90% at 50% 50%, black 10%, transparent 100%)',
-        WebkitMaskImage: 'radial-gradient(ellipse 80% 90% at 50% 50%, black 10%, transparent 100%)',
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)`,
+        backgroundSize: '72px 72px',
+        maskImage: 'radial-gradient(ellipse 75% 85% at 50% 50%, black 0%, transparent 100%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 75% 85% at 50% 50%, black 0%, transparent 100%)',
         pointerEvents: 'none',
       }} />
 
-      <div style={{ maxWidth: '760px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
 
         <div style={{
-          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          width: '56px', height: '56px',
-          background: 'rgba(200,255,0,0.08)', border: '1px solid rgba(200,255,0,0.2)',
-          borderRadius: '14px', marginBottom: '36px', boxShadow: '0 0 40px rgba(200,255,0,0.1)',
+          fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)',
+          letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '32px',
         }}>
-          <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '22px', color: 'var(--accent)' }}>◈</span>
+          Your move
         </div>
 
         <h2 style={{
-          fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(44px, 7vw, 96px)',
-          fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.95,
-          color: 'var(--text-primary)', marginBottom: '32px',
+          fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(48px, 8vw, 108px)',
+          fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 0.92,
+          color: 'var(--text-primary)', marginBottom: '40px',
         }}>
-          Your DNA.
+          The song you&apos;ve been
+          <br />
+          trying to write is
           <br />
           <span style={{
-            background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 45%, #E8FF80 100%)',
+            background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 50%, #E8FF80 100%)',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           }}>
-            Your blueprint.
+            5 minutes away.
           </span>
-          <br />
-          Your sound.
         </h2>
 
-        <p style={{ fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.75, maxWidth: '520px', margin: '0 auto 52px' }}>
-          Map your voice in 5 minutes. Generate your first A-grade blueprint before
-          the hour is up. 5 free blueprints, no credit card, no catch.
+        <p style={{
+          fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.75,
+          maxWidth: '540px', margin: '0 auto 52px',
+        }}>
+          Map your voice. Generate your first blueprint. See what it feels like
+          to get back a draft that actually sounds like you.
         </p>
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
           <Link href="/sign-up" className="btn-primary" style={{
-            fontSize: '16px', padding: '15px 40px', borderRadius: '9px',
+            fontSize: '17px', padding: '16px 48px', borderRadius: '10px',
             display: 'inline-flex', alignItems: 'center', gap: '10px', fontWeight: 700,
           }}>
-            Start Free — No Card Required
-            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            Start Writing Free
+            <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </Link>
-          <Link href="/pricing" className="btn-ghost" style={{ fontSize: '15px', padding: '14px 28px', borderRadius: '9px' }}>
+          <Link href="/pricing" className="btn-ghost" style={{ fontSize: '15px', padding: '15px 32px', borderRadius: '10px' }}>
             View Pricing
           </Link>
         </div>
 
-        <p style={{ marginTop: '20px', fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.06em' }}>
-          No credit card · No lock-in · Cancel anytime
+        <p style={{ marginTop: '20px', fontSize: '12px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.06em' }}>
+          5 free blueprints · No credit card · Cancel whenever
         </p>
 
-        <div style={{ marginTop: '72px', paddingTop: '48px', borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+        {/* Trust strip */}
+        <div style={{
+          marginTop: '80px', paddingTop: '52px', borderTop: '1px solid var(--border)',
+          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px',
+        }}>
           {[
-            {
-              glyph: '◈',
-              title: 'Powered by the best',
-              sub: 'Gemini 2.5 Pro — the flagship model, every generation',
-            },
-            {
-              glyph: '◉',
-              title: 'Grade S to F, not vibes',
-              sub: '28 quality laws scored on every single blueprint',
-            },
-            {
-              glyph: '▶',
-              title: 'Watch it write itself',
-              sub: 'Every word streamed live — no waiting, no refresh',
-            },
+            { glyph: '◈', title: 'Powered by the best', sub: 'Gemini 2.5 Pro on every generation — no shortcuts' },
+            { glyph: '◉', title: 'Graded, not guessed', sub: '28 quality checks before you see a single word' },
+            { glyph: '▶', title: 'Watch it happen live', sub: 'Every word streams to your screen in real time' },
           ].map((item) => (
             <div key={item.title} style={{
-              padding: '20px 16px', background: 'var(--bg-elevated)',
-              border: '1px solid var(--border)', borderRadius: '10px',
+              padding: '24px 20px', background: 'var(--bg-elevated)',
+              border: '1px solid var(--border)', borderRadius: '12px',
             }}>
-              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '16px', color: 'var(--accent)', display: 'block', marginBottom: '10px' }}>
+              <span style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '18px', color: 'var(--accent)', display: 'block', marginBottom: '12px' }}>
                 {item.glyph}
               </span>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '15px', color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '6px' }}>
                 {item.title}
               </div>
-              <div style={{ fontSize: '12px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '12px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
                 {item.sub}
               </div>
             </div>

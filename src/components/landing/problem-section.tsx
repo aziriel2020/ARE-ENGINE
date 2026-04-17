@@ -1,276 +1,134 @@
-const BEFORE_LINES = [
-  { label: 'VERSE 1', color: 'var(--text-tertiary)' },
-  { text: "I'm feeling lost inside my heart,",    color: 'var(--text-secondary)' },
-  { text: 'The pain tears my world apart,',        color: 'var(--text-secondary)' },
-  { text: 'Every single day feels cold,',          color: 'var(--text-secondary)' },
-  { text: "As my story gets too old.",             color: 'var(--text-secondary)' },
-  { label: 'CHORUS', color: 'var(--text-tertiary)' },
-  { text: "I'll rise up from the fall,",           color: 'var(--text-secondary)' },
-  { text: 'Standing tall through it all,',         color: 'var(--text-secondary)' },
-];
-
-const AFTER_LINES = [
-  { label: 'VERSE 1', color: 'rgba(200,255,0,0.5)' },
-  { text: 'Téléphone éteint depuis trois jours,', color: 'var(--text-primary)' },
-  { text: 'personne a rappelé',                   color: 'var(--text-primary)' },
-  { text: "T'as changé d'étage, t'as changé",    color: 'var(--text-primary)' },
-  { text: "d'haleine, t'as oublié",               color: 'var(--text-primary)' },
-  { label: 'CHORUS', color: 'rgba(200,255,0,0.5)' },
-  { text: "J'aurais dû garder le silence,",       color: 'var(--text-primary)' },
-  { text: "au lieu d'appeler ta clémence",        color: 'var(--text-primary)' },
-];
+import { Reveal } from './scroll-reveal';
 
 export function ProblemSection() {
   return (
     <section style={{
-      padding: 'clamp(80px, 10vw, 120px) 32px',
+      padding: 'clamp(96px, 12vw, 140px) 32px',
       background: 'var(--bg-elevated)',
-      borderTop: '1px solid var(--border)',
-      borderBottom: '1px solid var(--border)',
-      position: 'relative',
-      overflow: 'hidden',
+      borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
+      position: 'relative', overflow: 'hidden',
     }}>
 
       <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 40% 60% at 20% 50%, rgba(255,59,92,0.025) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 80% 50%, rgba(200,255,0,0.025) 0%, transparent 70%)',
+        position: 'absolute', inset: 0,
+        background: 'radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,59,92,0.02) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
 
-      <div style={{ maxWidth: '1120px', margin: '0 auto', position: 'relative' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
 
-        <div style={{ textAlign: 'center', marginBottom: '72px' }}>
-          <div style={{
-            fontSize: '10px',
-            fontFamily: 'IBM Plex Mono, monospace',
-            color: 'var(--error)',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            marginBottom: '16px',
-            opacity: 0.75,
-          }}>
-            Why Every Other Tool Fails You
-          </div>
-          <h2 style={{
-            fontFamily: 'Space Grotesk, sans-serif',
-            fontSize: 'clamp(32px, 4.5vw, 56px)',
-            fontWeight: 700,
-            letterSpacing: '-0.045em',
-            lineHeight: 1.05,
-            color: 'var(--text-primary)',
-          }}>
-            Generic AI sounds like{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #FF4444 0%, #FF8080 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              everyone.
-            </span>
-            <br />
-            ARE-E sounds like{' '}
-            <span style={{
-              background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              you.
-            </span>
-          </h2>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 80px 1fr',
-          gap: '0',
-          alignItems: 'stretch',
-          marginBottom: '72px',
-        }}>
-
-          {/* BEFORE card */}
-          <div style={{
-            background: 'rgba(255,59,92,0.03)',
-            border: '1px solid rgba(255,59,92,0.12)',
-            borderRadius: '12px 0 0 12px',
-            overflow: 'hidden',
-          }}>
+        <Reveal>
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <div style={{
-              padding: '14px 20px',
-              borderBottom: '1px solid rgba(255,59,92,0.1)',
-              background: 'rgba(255,59,92,0.04)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
+              fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
+              color: 'rgba(255,59,92,0.7)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '20px',
             }}>
-              <div style={{
-                width: '20px', height: '20px', borderRadius: '50%',
-                border: '1.5px solid rgba(255,59,92,0.4)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ color: 'var(--error)', fontSize: '11px', lineHeight: 1 }}>✕</span>
-              </div>
-              <span style={{
-                fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace',
-                color: 'var(--error)', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8,
-              }}>
-                Any Generic AI Tool
-              </span>
-              <span style={{
-                marginLeft: 'auto', fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
-                color: 'rgba(255,59,92,0.4)', padding: '2px 6px',
-                border: '1px solid rgba(255,59,92,0.15)', borderRadius: '3px',
-              }}>
-                No Identity
-              </span>
+              You already know the problem
             </div>
+            <h2 style={{
+              fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(36px, 5.5vw, 68px)',
+              fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97, color: 'var(--text-primary)',
+              marginBottom: '28px',
+            }}>
+              You can hear it in two seconds.
+              <br />
+              <span style={{
+                background: 'linear-gradient(135deg, #FF4444 0%, #FF8080 100%)',
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              }}>
+                That AI sound.
+              </span>
+            </h2>
+            <p style={{ fontSize: '18px', color: 'var(--text-secondary)', lineHeight: 1.8, maxWidth: '640px', margin: '0 auto' }}>
+              The forced rhymes. The vague emotion. The lyrics that could belong to anyone.
+              Every AI tool writes the same song — because none of them know who you are
+              before they start writing.
+            </p>
+          </div>
+        </Reveal>
 
-            <div style={{ padding: '24px', fontFamily: 'IBM Plex Mono, monospace', fontSize: '12.5px', lineHeight: 2 }}>
-              {BEFORE_LINES.map((line, i) => (
+        {/* The two experiences */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', borderRadius: '14px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+
+          {/* Left: old way */}
+          <Reveal delay={0}>
+            <div style={{ padding: '40px 36px', background: 'rgba(255,59,92,0.03)', height: '100%' }}>
+              <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'rgba(255,59,92,0.6)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="rgba(255,59,92,0.5)" strokeWidth="1"/><path d="M4 4l4 4M8 4l-4 4" stroke="rgba(255,59,92,0.5)" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                Every other tool
+              </div>
+              {[
+                'You type a vague prompt.',
+                'You get lyrics.',
+                'They sound like a template.',
+                'You edit for two hours.',
+                'You still hate them.',
+                'You start over.',
+              ].map((line, i) => (
                 <div key={i} style={{
-                  color: 'label' in line ? line.color : line.color,
-                  fontSize: 'label' in line ? '10px' : '12.5px',
-                  letterSpacing: 'label' in line ? '0.12em' : '0',
-                  textTransform: 'label' in line ? 'uppercase' : 'none',
-                  marginTop: 'label' in line && i > 0 ? '12px' : 0,
-                  opacity: 'label' in line ? 1 : 0.55,
+                  padding: '12px 0',
+                  borderBottom: i < 5 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.5,
+                  display: 'flex', alignItems: 'flex-start', gap: '12px',
                 }}>
-                  {'label' in line ? line.label : line.text}
+                  <span style={{ color: 'rgba(255,59,92,0.4)', marginTop: '2px', flexShrink: 0, fontSize: '13px' }}>✕</span>
+                  {line}
                 </div>
               ))}
             </div>
+          </Reveal>
 
-            <div style={{
-              margin: '0 20px 20px', padding: '12px 16px',
-              background: 'rgba(255,59,92,0.06)', border: '1px solid rgba(255,59,92,0.12)', borderRadius: '7px',
-            }}>
-              <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'rgba(255,59,92,0.6)', marginBottom: '4px' }}>
-                ✕ QUALITY CHECK FAILED
+          {/* Right: ARE-E way */}
+          <Reveal delay={80}>
+            <div style={{ padding: '40px 36px', background: 'rgba(200,255,0,0.02)', borderLeft: '1px solid rgba(200,255,0,0.1)', height: '100%' }}>
+              <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'rgba(200,255,0,0.6)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '28px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="rgba(200,255,0,0.5)" strokeWidth="1"/><path d="M3.5 6l2 2 3.5-3.5" stroke="rgba(200,255,0,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                With ARE-E
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                Clichés detected · No voice mapping · Could be anyone
-              </div>
-            </div>
-          </div>
-
-          {/* Center divider */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', position: 'relative' }}>
-            <div style={{ width: '1px', flex: 1, background: 'linear-gradient(to bottom, transparent, var(--border), transparent)' }} />
-            <div style={{
-              width: '40px', height: '40px', borderRadius: '50%',
-              background: 'var(--bg-surface)', border: '1px solid var(--border-hover)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, zIndex: 1,
-            }}>
-              <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-tertiary)' }}>VS</span>
-            </div>
-            <div style={{ width: '1px', flex: 1, background: 'linear-gradient(to bottom, transparent, var(--border), transparent)' }} />
-          </div>
-
-          {/* AFTER card */}
-          <div style={{
-            background: 'rgba(200,255,0,0.02)',
-            border: '1px solid rgba(200,255,0,0.18)',
-            borderRadius: '0 12px 12px 0',
-            overflow: 'hidden',
-            boxShadow: '0 0 40px rgba(200,255,0,0.04)',
-          }}>
-            <div style={{
-              padding: '14px 20px', borderBottom: '1px solid rgba(200,255,0,0.12)',
-              background: 'rgba(200,255,0,0.04)', display: 'flex', alignItems: 'center', gap: '8px',
-            }}>
-              <div style={{
-                width: '20px', height: '20px', borderRadius: '50%',
-                border: '1.5px solid rgba(200,255,0,0.4)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ color: 'var(--accent)', fontSize: '10px', lineHeight: 1 }}>✓</span>
-              </div>
-              <span style={{
-                fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace',
-                color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase',
-              }}>
-                ARE-E Engine
-              </span>
-              <span style={{
-                marginLeft: 'auto', fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace',
-                color: 'rgba(200,255,0,0.6)', padding: '2px 6px',
-                border: '1px solid rgba(200,255,0,0.2)', borderRadius: '3px',
-              }}>
-                DNA v2.3
-              </span>
-            </div>
-
-            <div style={{ padding: '24px', fontFamily: 'IBM Plex Mono, monospace', fontSize: '12.5px', lineHeight: 2 }}>
-              {AFTER_LINES.map((line, i) => (
+              {[
+                'You share 5 of your existing lyrics.',
+                'We map exactly who you are as an artist.',
+                'We generate a complete blueprint — for you.',
+                'It comes back graded before you read it.',
+                'You refine a draft that already sounds like you.',
+                'You\'re done in 20 minutes.',
+              ].map((line, i) => (
                 <div key={i} style={{
-                  color: 'label' in line ? line.color : line.color,
-                  fontSize: 'label' in line ? '10px' : '12.5px',
-                  letterSpacing: 'label' in line ? '0.12em' : '0',
-                  textTransform: 'label' in line ? 'uppercase' : 'none',
-                  marginTop: 'label' in line && i > 0 ? '12px' : 0,
+                  padding: '12px 0',
+                  borderBottom: i < 5 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  fontSize: '15px', color: 'var(--text-primary)', lineHeight: 1.5,
+                  display: 'flex', alignItems: 'flex-start', gap: '12px',
                 }}>
-                  {'label' in line ? line.label : line.text}
+                  <span style={{ color: 'var(--accent)', marginTop: '2px', flexShrink: 0, fontSize: '13px' }}>✓</span>
+                  {line}
                 </div>
               ))}
             </div>
+          </Reveal>
+        </div>
 
-            <div style={{
-              margin: '0 20px 20px', padding: '12px 16px',
-              background: 'rgba(200,255,0,0.04)', border: '1px solid rgba(200,255,0,0.12)',
-              borderRadius: '7px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            }}>
-              <div>
-                <div style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', marginBottom: '4px' }}>
-                  ✓ 28-LAW QUALITY REPORT
+        {/* Bottom truth strip */}
+        <Reveal delay={120}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: 'var(--border)', marginTop: '2px', borderRadius: '0 0 14px 14px', overflow: 'hidden' }}>
+            {[
+              { stat: '0', text: 'other AI tools map your identity before writing' },
+              { stat: '0', text: 'other AI tools grade your output automatically' },
+              { stat: '0', text: 'other AI tools get better the more you use them' },
+            ].map((t, i) => (
+              <div key={i} style={{ padding: '24px 20px', background: 'var(--bg-surface)', textAlign: 'center' }}>
+                <div style={{
+                  fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700,
+                  fontSize: '40px', color: 'rgba(255,59,92,0.7)', letterSpacing: '-0.06em', lineHeight: 1, marginBottom: '10px',
+                }}>
+                  {t.stat}
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                  Voice matched · 25/28 laws passed · Grade A
+                <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.6 }}>
+                  {t.text}
                 </div>
               </div>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '28px', color: 'var(--success)', letterSpacing: '-0.04em' }}>
-                A
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
-
-        {/* Three problem callouts */}
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1px', background: 'var(--border)', borderRadius: '12px', overflow: 'hidden',
-        }}>
-          {[
-            {
-              num: '01',
-              title: 'It sounds like everyone\'s first draft',
-              body: 'ChatGPT writes the same hollow verse for a platinum artist and a bedroom producer. It has no concept of your vocabulary, your emotional axis, or what makes you sound like you.',
-            },
-            {
-              num: '02',
-              title: 'You get output. You never get better.',
-              body: 'Every other tool hands you lyrics and disappears. ARE-E scores every blueprint against 28 quality laws, shows you exactly what passed and what failed, and re-generates the weak sections automatically.',
-            },
-            {
-              num: '03',
-              title: 'The more you use AI, the less you sound like yourself.',
-              body: 'Generic tools erode your voice into the average. ARE-E Vocal DNA profiles grow richer, sharper, and more precise with every generation. Compounding identity — not dilution.',
-            },
-          ].map((item, i) => (
-            <div key={i} style={{ padding: '28px 24px', background: 'var(--bg-elevated)' }}>
-              <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: 'var(--text-ghost)', letterSpacing: '0.1em', marginBottom: '12px' }}>
-                {item.num}
-              </div>
-              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '16px', fontWeight: 600, letterSpacing: '-0.03em', color: 'var(--text-primary)', marginBottom: '10px' }}>
-                {item.title}
-              </h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.75 }}>
-                {item.body}
-              </p>
-            </div>
-          ))}
-        </div>
+        </Reveal>
 
       </div>
     </section>
