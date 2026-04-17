@@ -6,7 +6,7 @@ import { Reveal } from './scroll-reveal';
 const PRESETS = [
   {
     id: 'french-trap',
-    label: 'French Trap',
+    label: 'Global Pop',
     artist: 'Lil Sombre',
     vectors: [
       { name: 'Lexical Tier',    value: 88, tag: 'street / verlan' },
@@ -33,7 +33,7 @@ const PRESETS = [
   },
   {
     id: 'uk-drill',
-    label: 'UK Drill',
+    label: 'Cinematic Hybrid',
     artist: 'M1llz',
     vectors: [
       { name: 'Lexical Tier',    value: 95, tag: 'road / slang' },
@@ -60,7 +60,7 @@ const PRESETS = [
   },
   {
     id: 'rnb-soul',
-    label: 'R&B Soul',
+    label: 'Afro-Latin Fusion',
     artist: 'Nova Hayes',
     vectors: [
       { name: 'Lexical Tier',    value: 76, tag: 'poetic / intimate' },
@@ -165,7 +165,7 @@ export function InteractiveDemo() {
   const gradeColor = preset.grade === 'S' ? 'var(--accent)' : 'var(--success)';
 
   return (
-    <section style={{
+    <section id="demo" style={{
       padding: 'clamp(80px, 10vw, 120px) 32px',
       position: 'relative',
       overflow: 'hidden',
@@ -194,14 +194,14 @@ export function InteractiveDemo() {
               color: 'var(--text-primary)',
               marginBottom: '16px',
             }}>
-              Watch ARE extract your
+              Watch the 2-input workflow
               <br />
               <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                Vocal DNA live.
+                from brief to full package.
               </span>
             </h2>
             <p style={{ fontSize: '15px', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
-              Select an artist style. ARE maps their 7-dimension Vocal DNA, streams the lyrics (Block 3 of 10), and runs the 100/100 quality protocol — all in under 4 minutes. This is what you get on every generation.
+              Choose a model scenario. ARE-E starts from Artist + Theme, expands the creative brief, streams core writing, and scores the result before final delivery.
             </p>
           </div>
         </Reveal>

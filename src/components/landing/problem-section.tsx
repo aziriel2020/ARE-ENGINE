@@ -1,68 +1,58 @@
 import { Reveal } from './scroll-reveal';
 
 const LEFT = [
-  'Writes in generic, borrowed vocabulary — not yours',
-  'Pulls clichés from a pool of 10 million overused lines',
-  'Has no idea who you are as an artist',
-  'Names emotions instead of showing them',
-  'Gives you raw text you spend hours trying to fix',
-  'Sounds like AI doing an impression of a songwriter',
+  'Generic prompts with no artist identity model',
+  'Weak output outside one language or one market',
+  'No serious path from idea to production details',
+  'No support for ensemble writing (duet / trio / band)',
+  'No consistent quality control before delivery',
+  'You still spend hours rewriting everything',
 ];
 
 const RIGHT = [
-  'Builds your Vocal DNA (7 dimensions) before word one',
-  '220+ banned clichés — each replaced with a living alternative',
-  'Maps your emotional axis, imagery world, register, flow',
-  'Camera rule: films actions and objects, never names feelings',
-  'Delivers 10 complete blocks — lyrics to release strategy',
-  'Passes 16 Supreme Laws + 10 Perfection Modules. Or rewrites.',
+  'Starts with 2 inputs: Artist + Theme, then expands with your optional direction',
+  'Designed for all languages, global scenes, and hybrid styles',
+  'Returns a professional package: writing + musical intent + generation specs',
+  'Can design role-aware parts for lead voice, harmonies, duet, trio, or band',
+  'Runs an internal quality pipeline before final output is returned',
+  'Built to reduce production time from concept to usable draft',
 ];
 
 const TRUTHS = [
-  { stat: '0', text: 'other AI tools build your Vocal DNA before writing' },
-  { stat: '0', text: 'other AI tools have a 220+ cliché kill list per language' },
-  { stat: '0', text: 'other AI tools deliver a production blueprint + Suno/Udio prompts' },
+  { stat: '2', text: 'parameters to launch (Artist + Theme)' },
+  { stat: '10', text: 'structured output blocks in each generation package' },
+  { stat: 'Global', text: 'coverage across language, genre, and instrumentation systems' },
 ];
 
 export function ProblemSection() {
   return (
-    <section style={{
-      padding: 'clamp(96px, 12vw, 140px) 32px',
-      borderTop: '1px solid var(--border)',
-      position: 'relative', overflow: 'hidden',
-    }}>
-
-      <div style={{ position: 'absolute', top: '10%', left: '-100px', width: '500px', height: '500px', background: 'radial-gradient(ellipse at center, rgba(255,59,92,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
+    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1120px', margin: '0 auto' }}>
-
         <Reveal>
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
             <div style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              The problem
+              Why creators switch
             </div>
             <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(32px, 5vw, 60px)', fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97, color: 'var(--text-primary)', marginBottom: '20px' }}>
-              You already know what&apos;s wrong.
+              People don&apos;t buy "AI".
               <br />
               <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                It doesn&apos;t sound like you.
+                They buy finished songs faster.
               </span>
             </h2>
-            <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.75 }}>
-              Every AI tool writes the same song for everyone. Because they never ask who you are first.
+            <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '640px', margin: '0 auto', lineHeight: 1.75 }}>
+              ARE-E focuses on what matters commercially: clear direction in, production-ready value out.
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={60}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-
-            {/* Left — every other AI */}
             <div style={{ background: 'rgba(255,59,92,0.03)', padding: '36px 32px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--error)', boxShadow: '0 0 6px rgba(255,59,92,0.5)' }} />
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--error)' }} />
                 <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--error)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Every other AI tool
+                  Typical generators
                 </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -75,12 +65,11 @@ export function ProblemSection() {
               </div>
             </div>
 
-            {/* Right — ARE */}
             <div style={{ background: 'rgba(200,255,0,0.02)', padding: '36px 32px', borderLeft: '1px solid var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 6px rgba(200,255,0,0.5)' }} />
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)' }} />
                 <span style={{ fontSize: '11px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Acoustic Reality Engine
+                  ARE-E system
                 </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -92,16 +81,14 @@ export function ProblemSection() {
                 ))}
               </div>
             </div>
-
           </div>
         </Reveal>
 
-        {/* Truth strip */}
         <Reveal delay={120}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginTop: '32px' }}>
             {TRUTHS.map((t, i) => (
               <div key={i} style={{ padding: '24px', background: 'var(--bg-elevated)', border: '1px solid var(--border)', borderRadius: '12px', textAlign: 'center' }}>
-                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '40px', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--accent)', lineHeight: 1, marginBottom: '8px' }}>
+                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '32px', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--accent)', lineHeight: 1, marginBottom: '8px' }}>
                   {t.stat}
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.5 }}>
@@ -111,7 +98,6 @@ export function ProblemSection() {
             ))}
           </div>
         </Reveal>
-
       </div>
     </section>
   );
