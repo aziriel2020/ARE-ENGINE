@@ -9,13 +9,13 @@ const TIERS = [
     name: 'Free',
     tag: 'FREE',
     monthlyPrice: 0,
-    subtitle: 'Experience the difference.',
+    subtitle: 'Validate the full package.',
     highlight: 'No card needed',
     features: [
       '5 complete generations — free forever',
       'Full Vocal DNA mapping',
       'All 3 laws: Ghost Line, Ugly Emotion, Tear-Drop Detail',
-      'French and English, both fully supported',
+      'Multilingual and cross-genre generation',
       '10-block output on every generation',
       'Suno and Udio prompts included',
     ],
@@ -28,11 +28,11 @@ const TIERS = [
     name: 'Pro',
     tag: 'PRO',
     monthlyPrice: 299,
-    subtitle: 'For artists who are serious.',
+    subtitle: 'For professional creators.',
     highlight: '14-day free trial',
     features: [
       '100 generations / month',
-      '5 Vocal DNA profiles — write for any artist',
+      '5 creative profiles for different artist directions',
       'Full 16-law audit + 10 Perfection Modules',
       'Every generation saved, versioned, comparable',
       'PDF, Markdown, TXT export',
@@ -47,11 +47,11 @@ const TIERS = [
     name: 'Studio',
     tag: 'STUDIO',
     monthlyPrice: 799,
-    subtitle: 'For producers and labels.',
+    subtitle: 'For studios and label teams.',
     highlight: '14-day free trial',
     features: [
       '500 generations / month',
-      '20 Vocal DNA profiles — your full roster',
+      '20 creative profiles for roster-scale workflows',
       'All export formats including DOCX + JSON',
       '10 API keys + 5 webhooks',
       'Priority 24h support',
@@ -65,7 +65,7 @@ const TIERS = [
     name: 'Enterprise',
     tag: 'ENTERPRISE',
     monthlyPrice: 2999,
-    subtitle: 'For platforms and large labels.',
+    subtitle: 'For enterprise creative operations.',
     highlight: '30-day pilot',
     features: [
       'Unlimited generations — no caps',
@@ -102,14 +102,14 @@ export function PricingSection() {
               Pricing
             </div>
             <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.97, color: 'var(--text-primary)', marginBottom: '16px' }}>
-              Your first 5 songs
+              Launch fast with free generation
               <br />
               <span style={{ background: 'linear-gradient(120deg, var(--accent) 0%, #A8FF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                are on us.
+                then scale when ready.
               </span>
             </h2>
             <p style={{ fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '36px', lineHeight: 1.7 }}>
-              Start free. No card. Upgrade only when you can&apos;t imagine going back.
+              Start with two parameters, prove value, then pick the tier that matches your production volume.
             </p>
 
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0', background: 'var(--bg-surface)', border: '1px solid var(--border-hover)', borderRadius: '9px', padding: '3px' }}>
