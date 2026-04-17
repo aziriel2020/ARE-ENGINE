@@ -119,6 +119,18 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### Deploy on Vercel (production)
+
+1. Push this repository to GitHub/GitLab/Bitbucket.
+2. In Vercel, click **Add New Project** and import the repo.
+3. Keep defaults from `vercel.json`:
+   - Install Command: `npm ci`
+   - Build Command: `prisma generate && next build`
+4. Set the **Production** environment variables in Vercel (see table below).
+5. Redeploy after all env vars are saved.
+
+For a full checklist (webhooks + smoke tests), see [`docs/VERCEL_DEPLOYMENT.md`](docs/VERCEL_DEPLOYMENT.md).
+
 ### Environment variables
 
 | Variable | Required | Description |
@@ -137,6 +149,22 @@ Open [http://localhost:3000](http://localhost:3000).
 | `STRIPE_STUDIO_PRICE_ID` | Prod | Stripe price ID for STUDIO plan |
 | `SENTRY_DSN` | Prod | Sentry DSN (Sentry disabled if unset) |
 | `ARE_E_TEST_MODE` | CI | Set `true` to bypass all external services |
+
+### Minimum env vars for first successful Vercel deploy
+
+If you want the app to deploy and boot with core features:
+
+- `DATABASE_URL` (PostgreSQL in production)
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `CLERK_SECRET_KEY`
+- `GEMINI_API_KEY`
+
+Recommended immediately after first boot:
+
+- `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+- `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_PRO_PRICE_ID`, `STRIPE_STUDIO_PRICE_ID`
+- `SENTRY_DSN`
 
 ---
 
