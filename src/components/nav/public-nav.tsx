@@ -22,7 +22,7 @@ export function PublicNav() {
       top: 0,
       zIndex: 100,
       borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.035)'}`,
-      background: scrolled ? 'rgba(0,0,0,0.94)' : 'rgba(0,0,0,0.82)',
+      background: scrolled ? 'linear-gradient(180deg, rgba(3,4,7,0.94), rgba(3,4,7,0.9))' : 'linear-gradient(180deg, rgba(3,4,7,0.82), rgba(3,4,7,0.72))',
       backdropFilter: 'blur(24px) saturate(180%)',
       WebkitBackdropFilter: 'blur(24px) saturate(180%)',
       transition: 'background 200ms ease, border-color 200ms ease, height 200ms ease',
@@ -74,7 +74,7 @@ export function PublicNav() {
               color: 'var(--text-tertiary)',
               fontFamily: 'IBM Plex Mono, monospace',
               letterSpacing: '0.08em',
-            }}>V3</span>
+            }}>PRIME</span>
           </div>
         </Link>
 
