@@ -90,7 +90,9 @@ export function PricingSection() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden', backgroundImage: "url('/brand/urban-pricing.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(5,7,9,0.58) 0%, rgba(5,7,9,0.9) 70%)', pointerEvents: 'none' }} />
 
       <div style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '400px', background: 'radial-gradient(ellipse at center, rgba(200,255,0,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
@@ -131,7 +133,7 @@ export function PricingSection() {
           {TIERS.map((tier, idx) => (
             <Reveal key={tier.name} delay={idx * 60}>
               <div style={{
-                background: tier.featured ? 'var(--bg-surface)' : 'var(--bg-elevated)',
+                background: tier.featured ? 'rgba(18,22,26,0.9)' : 'rgba(11,14,18,0.84)',
                 border: `1px solid ${tier.featured ? 'rgba(200,255,0,0.3)' : 'var(--border)'}`,
                 borderRadius: '16px', padding: '28px 24px',
                 display: 'flex', flexDirection: 'column', gap: '24px',
