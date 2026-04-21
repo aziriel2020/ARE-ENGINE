@@ -90,7 +90,7 @@ export function PricingSection() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden', backgroundImage: "url('/brand/urban-pricing.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <section style={{ padding: 'clamp(96px, 12vw, 140px) 32px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden', backgroundImage: "url('/brand/urban-pricing-gpt.webp'), url('/brand/urban-pricing.svg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
 
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(5,7,9,0.58) 0%, rgba(5,7,9,0.9) 70%)', pointerEvents: 'none' }} />
 
