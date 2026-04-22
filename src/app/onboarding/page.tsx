@@ -68,7 +68,7 @@ export default function OnboardingPage() {
     setLoading(true);
     try {
       await new Promise((r) => setTimeout(r, 500));
-      toast({ title: 'DNA profile created', description: 'Welcome to ARE-E!', variant: 'success' });
+      toast({ title: 'DNA profile created', description: 'Welcome to ANIMAENGINE!', variant: 'success' });
       router.push('/studio');
     } finally {
       setLoading(false);
@@ -90,7 +90,7 @@ export default function OnboardingPage() {
       {/* Logo */}
       <div style={{ marginBottom: '48px', textAlign: 'center' }}>
         <span style={{ fontFamily: 'Space Mono, monospace', fontSize: '20px', fontWeight: 700, color: 'var(--accent)' }}>
-          ARE-E
+          ANIMAENGINE
         </span>
         <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', marginTop: '4px' }}>
           ONBOARDING — STEP {step} OF 3

@@ -49,7 +49,7 @@ export function buildSectionRegenerationPrompt(
 
   const dnaReminder = buildDNAReminder(dna);
 
-  return `You are ARE-E, revising a lyric blueprint on regeneration cycle ${regenerationCycle}/2.
+  return `You are ANIMAENGINE, revising a lyric blueprint on regeneration cycle ${regenerationCycle}/2.
 
 ## TASK
 Surgically fix the FAILED SECTIONS of the blueprint below. Only rewrite the sections

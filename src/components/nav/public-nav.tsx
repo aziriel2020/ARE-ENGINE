@@ -59,7 +59,7 @@ export function PublicNav() {
               color: '#000',
               letterSpacing: '-0.05em',
               transition: 'font-size 200ms ease',
-            }}>AE</span>
+            }}>AN</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
             <span style={{
@@ -68,7 +68,7 @@ export function PublicNav() {
               fontSize: '16px',
               color: 'var(--text-primary)',
               letterSpacing: '-0.04em',
-            }}>ARE-E</span>
+            }}>ANIMAENGINE</span>
             <span style={{
               fontSize: '10px',
               color: 'var(--text-tertiary)',

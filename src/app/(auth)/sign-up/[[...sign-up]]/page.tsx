@@ -23,7 +23,7 @@ export default function SignUpPage() {
               letterSpacing: '-0.02em',
             }}
           >
-            ARE-E
+            ANIMAENGINE
           </span>
           <p
             style={{

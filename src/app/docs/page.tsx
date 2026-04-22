@@ -2,7 +2,7 @@ import { PublicNav } from '@/components/nav/public-nav';
 import { Footer } from '@/components/landing/footer';
 
 export const metadata = {
-  title: 'System Docs — ARE-E',
+  title: 'System Docs — ANIMAENGINE',
   description: 'Premium system documentation for operators, developers, and production teams.',
 };
 
@@ -41,7 +41,7 @@ export default function DocsPage() {
               </span>
             </h1>
             <p style={{ margin: 0, maxWidth: '770px', color: 'var(--text-secondary)', fontSize: '17px', lineHeight: 1.8 }}>
-              Artist + Theme in, professional package out. Use this page to integrate, automate, and operate ARE-E at creator, studio, or enterprise scale.
+              Artist + Theme in, professional package out. Use this page to integrate, automate, and operate ANIMAENGINE at creator, studio, or enterprise scale.
             </p>
           </div>
 
@@ -55,7 +55,7 @@ export default function DocsPage() {
             <div style={{ border: '1px solid rgba(255,255,255,0.14)', borderRadius: '14px', padding: '20px', background: 'rgba(12,16,22,0.62)' }}>
               <h2 style={{ margin: '0 0 10px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '24px' }}>Quick auth</h2>
               <pre style={{ margin: 0, background: 'rgba(0,0,0,0.35)', border: '1px solid var(--border)', borderRadius: '8px', padding: '14px', color: 'var(--accent)', fontSize: '12px', overflowX: 'auto' }}>
-{`curl https://are-e.app/api/generate \\
+{`curl https://animaengine.app/api/generate \\
   -H "x-are-api-key: are_k_your_key_here" \\
   -H "content-type: application/json" \\
   -d '{"prompt":"Artist: cinematic hybrid. Theme: redemption."}'`}

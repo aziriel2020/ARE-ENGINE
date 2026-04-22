@@ -1,6 +1,6 @@
-# Vercel Deployment Guide (ARE-E)
+# Vercel Deployment Guide (ANIMAENGINE)
 
-This is a production checklist to deploy ARE-E on Vercel with Clerk, PostgreSQL, Gemini, Stripe, Upstash, and optional Sentry.
+This is a production checklist to deploy ANIMAENGINE on Vercel with Clerk, PostgreSQL, Gemini, Stripe, Upstash, and optional Sentry.
 
 ## 1) Create the Vercel project
 

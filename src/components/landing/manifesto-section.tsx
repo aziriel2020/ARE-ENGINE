@@ -2,7 +2,7 @@ import { Reveal } from './scroll-reveal';
 
 const LINES = [
   { text: 'Every AI tool is making music worse.', accent: false },
-  { text: "ARE-E is built to reverse that.", accent: true },
+  { text: "ANIMAENGINE is built to reverse that.", accent: true },
 ];
 
 const TRUTHS = [
@@ -14,7 +14,7 @@ const TRUTHS = [
   {
     stat: '$0',
     claim: 'of value from a tool that doesn\'t know who you are before it writes',
-    sub: 'Knowing your style isn\'t a feature. It\'s the baseline. ARE-E built the entire pipeline around your identity — not around a prompt.',
+    sub: 'Knowing your style isn\'t a feature. It\'s the baseline. ANIMAENGINE built the entire pipeline around your identity — not around a prompt.',
   },
   {
     stat: '∞',
@@ -78,7 +78,7 @@ export function ManifestoSection() {
             }}>
               Artists deserve tools that amplify their identity — not erase it.
               The music industry doesn&apos;t need more content. It needs more character.
-              ARE-E is how you keep yours.
+              ANIMAENGINE is how you keep yours.
             </p>
           </div>
         </Reveal>

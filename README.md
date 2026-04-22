@@ -1,4 +1,4 @@
-# ARE-E V3.0 — Opus Supreme
+# ANIMAENGINE V3.0 — Opus Supreme
 
 **Domain-specific creative intelligence for lyric generation.**  
 Multi-model AI pipeline · 28-Law quality scoring · Vocal DNA identity system
@@ -7,7 +7,7 @@ Multi-model AI pipeline · 28-Law quality scoring · Vocal DNA identity system
 
 ## Overview
 
-ARE-E (Artistic Rendering Engine) generates professional-grade song blueprints by fusing a 4-stage AI pipeline with a proprietary 28-Law quality scoring framework. Every output is evaluated against the artist's Vocal DNA — a 7-vector identity profile capturing lexical, emotional, rhythmic, thematic, sonic, structural, and influence dimensions.
+ANIMAENGINE (ANIMAENGINE) generates professional-grade song blueprints by fusing a 4-stage AI pipeline with a proprietary 28-Law quality scoring framework. Every output is evaluated against the artist's Vocal DNA — a 7-vector identity profile capturing lexical, emotional, rhythmic, thematic, sonic, structural, and influence dimensions.
 
 ### Key features
 
@@ -43,7 +43,7 @@ ARE-E (Artistic Rendering Engine) generates professional-grade song blueprints b
 ## Project structure
 
 ```
-are-engine/
+animaengine/
 ├── prisma/
 │   ├── schema.prisma          # Data models
 │   └── seed.ts                # Dev seed data (JCAY + 3 blueprints)
@@ -99,8 +99,8 @@ are-engine/
 ### Local setup
 
 ```bash
-git clone https://github.com/aziriel2020/are-engine
-cd are-engine
+git clone https://github.com/aziriel2020/animaengine
+cd animaengine
 npm ci
 
 # Copy and fill in env vars

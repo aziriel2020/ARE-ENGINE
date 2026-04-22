@@ -173,7 +173,7 @@ export function DnaSection() {
               </h2>
 
               <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '12px' }}>
-                Most tools don&apos;t know who you are before they write for you. ARE-E changes that.
+                Most tools don&apos;t know who you are before they write for you. ANIMAENGINE changes that.
                 Paste a few lyrics, describe your style — we map your creative identity across
                 7 machine-readable dimensions that persist and sharpen with every generation.
               </p>

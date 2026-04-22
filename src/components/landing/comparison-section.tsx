@@ -3,7 +3,7 @@ import { Reveal } from './scroll-reveal';
 type Cell = { value: string; sub?: string; yes?: boolean; no?: boolean };
 
 const COLS = [
-  { id: 'are-e',   label: 'ARE-E V3',        sub: 'Opus Supreme',        highlight: true  },
+  { id: 'are-e',   label: 'ANIMAENGINE V3',        sub: 'Opus Supreme',        highlight: true  },
   { id: 'chatgpt', label: 'ChatGPT',          sub: '+ custom prompt',     highlight: false },
   { id: 'other',   label: 'Lyric Generators', sub: 'Udio / Suno / etc.',  highlight: false },
 ];

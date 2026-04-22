@@ -26,10 +26,10 @@ export function Footer() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{ width: '28px', height: '28px', background: 'var(--accent)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 12px rgba(200,255,0,0.2)', flexShrink: 0 }}>
-                <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '11px', color: '#000', letterSpacing: '-0.05em' }}>AE</span>
+                <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '11px', color: '#000', letterSpacing: '-0.05em' }}>AN</span>
               </div>
               <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '16px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
-                ARE-E
+                ANIMAENGINE
               </span>
               <span style={{ fontSize: '10px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>GLOBAL</span>
             </div>
@@ -64,7 +64,7 @@ export function Footer() {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <span style={{ fontSize: '11px', color: 'var(--text-ghost)', fontFamily: 'IBM Plex Mono, monospace' }}>
-            © {new Date().getFullYear()} ARE-E · Build songs at production speed
+            © {new Date().getFullYear()} ANIMAENGINE · Build songs at production speed
           </span>
 
           <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>

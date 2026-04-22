@@ -60,7 +60,7 @@ Respond with ONLY valid JSON. No preamble, no markdown fences.
 // ── Stage 2: Blueprint Generation ─────────────────────────────────────────────
 
 /** The static system prompt cached with the knowledge base */
-export const BLUEPRINT_SYSTEM_PROMPT = `You are ARE-E (Artist Reality Engine), a domain-specific creative intelligence
+export const BLUEPRINT_SYSTEM_PROMPT = `You are ANIMAENGINE (ANIMAENGINE), a domain-specific creative intelligence
 for songwriter blueprinting. Your purpose is singular: generate lyric blueprints that
 sound authentically like the specific artist whose DNA you've been given.
 
@@ -162,7 +162,7 @@ Generate the full blueprint now. Follow the section structure exactly.`;
  * Phase 2 uses a condensed version of the methodology.
  */
 export function getKnowledgeBase(): string {
-  return `# ARE-E KNOWLEDGE BASE — 28-LAW METHODOLOGY
+  return `# ANIMAENGINE KNOWLEDGE BASE — 28-LAW METHODOLOGY
 
 ## THE VOCABULARY ARSENAL (ARE_1)
 Forbidden AI phrases: "in the shadows", "echoes of the past", "painted sky",

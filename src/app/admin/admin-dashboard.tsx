@@ -136,7 +136,7 @@ export function AdminDashboard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '26px' }}>
         <div>
           <h1 style={{ margin: '0 0 4px', fontFamily: 'Space Grotesk, sans-serif', fontSize: '26px', letterSpacing: '-0.04em' }}>
-            ARE-E Command Center
+            ANIMAENGINE Command Center
           </h1>
           <p style={{ margin: 0, fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.08em' }}>
             ADMIN / PLATFORM / API / COMMERCIAL CONTROL

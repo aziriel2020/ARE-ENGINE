@@ -2,7 +2,7 @@ import { Reveal } from './scroll-reveal';
 
 const STEPS = [
   { label: 'Input', title: 'Provide Artist + Theme', text: 'Start minimal, then optionally add advanced direction: instrumentation, vocal role splits, references, and emotional arc.' },
-  { label: 'Orchestration', title: 'ARE-E reasons through the full brief', text: 'Gemini 3.1 Pro flagship orchestration handles genre logic, language control, arrangement shape, and structure planning.' },
+  { label: 'Orchestration', title: 'ANIMAENGINE reasons through the full brief', text: 'Gemini 3.1 Pro flagship orchestration handles genre logic, language control, arrangement shape, and structure planning.' },
   { label: 'Delivery', title: 'Receive a full production package', text: 'Get songwriting structure, lyrics, arrangement guidance, and execution-ready prompts in one standardized output.' },
 ];
 

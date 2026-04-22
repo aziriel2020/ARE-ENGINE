@@ -97,7 +97,7 @@ async function deliverToEndpoint(
         'Content-Type': 'application/json',
         'X-ARE-Signature': signature,
         'X-ARE-Event': payload.type,
-        'User-Agent': 'ARE-E-Webhooks/3.0',
+        'User-Agent': 'ANIMAENGINE-Webhooks/3.0',
       },
       body,
       signal: controller.signal,

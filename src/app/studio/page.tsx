@@ -203,7 +203,7 @@ export default function StudioPage() {
               Generate Blueprint
             </h1>
             <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', margin: 0, letterSpacing: '-0.01em' }}>
-              Describe your vision — ARE-E handles the rest
+              Describe your vision — ANIMAENGINE handles the rest
             </p>
           </div>
           {generating && (

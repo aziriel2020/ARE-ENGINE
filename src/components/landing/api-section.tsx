@@ -1,9 +1,9 @@
 import { Reveal } from './scroll-reveal';
 
 const CODE_LINES = [
-  { tokens: [{ t: 'import', c: 'kw' }, { t: ' { AreEngine } ', c: 'txt' }, { t: 'from', c: 'kw' }, { t: " '@are-engine/sdk'", c: 'str' }, { t: ';', c: 'txt' }] },
+  { tokens: [{ t: 'import', c: 'kw' }, { t: ' { AnimaEngine } ', c: 'txt' }, { t: 'from', c: 'kw' }, { t: " '@animaengine/sdk'", c: 'str' }, { t: ';', c: 'txt' }] },
   { tokens: [] },
-  { tokens: [{ t: 'const', c: 'kw' }, { t: ' are ', c: 'txt' }, { t: '=', c: 'op' }, { t: ' new AreEngine({\n', c: 'txt' }] },
+  { tokens: [{ t: 'const', c: 'kw' }, { t: ' are ', c: 'txt' }, { t: '=', c: 'op' }, { t: ' new AnimaEngine({\n', c: 'txt' }] },
   { tokens: [{ t: '  apiKey', c: 'txt' }, { t: ': ', c: 'op' }, { t: 'process.env.ARE_API_KEY', c: 'str' }] },
   { tokens: [{ t: '});', c: 'txt' }] },
   { tokens: [] },
@@ -97,7 +97,7 @@ export function ApiSection() {
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                 }}>
-                  the ARE-E API
+                  the ANIMAENGINE API
                 </span>
               </h2>
 
@@ -186,8 +186,8 @@ export function ApiSection() {
 
               {/* Status */}
               <div style={{ padding: '7px 16px', borderTop: '1px solid var(--border)', background: 'rgba(200,255,0,0.02)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em' }}>◈ ARE-ENGINE SDK v3</span>
-                <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)' }}>npm i @are-engine/sdk</span>
+                <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--accent)', letterSpacing: '0.08em' }}>◈ ANIMAENGINENGINE SDK v3</span>
+                <span style={{ fontSize: '10px', fontFamily: 'IBM Plex Mono, monospace', color: 'var(--text-ghost)' }}>npm i @animaengine/sdk</span>
               </div>
             </div>
           </Reveal>

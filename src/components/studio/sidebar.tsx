@@ -61,11 +61,11 @@ export function Sidebar() {
             flexShrink: 0,
             boxShadow: '0 0 12px rgba(200,255,0,0.25)',
           }}>
-            <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '12px', color: '#000', letterSpacing: '-0.05em' }}>AE</span>
+            <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '12px', color: '#000', letterSpacing: '-0.05em' }}>AN</span>
           </div>
           <div>
             <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '15px', color: 'var(--text-primary)', letterSpacing: '-0.04em', lineHeight: 1 }}>
-              ARE-E
+              ANIMAENGINE
             </div>
             <div style={{ fontSize: '10px', color: 'var(--text-tertiary)', fontFamily: 'IBM Plex Mono, monospace', letterSpacing: '0.06em', marginTop: '2px' }}>
               STUDIO

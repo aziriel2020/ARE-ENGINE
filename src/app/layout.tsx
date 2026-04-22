@@ -4,17 +4,17 @@ import './globals.css';
 import { ToastProvider } from '@/components/ui/toast-provider';
 
 export const metadata: Metadata = {
-  title: 'ARE-E — Artist Reality Engine',
+  title: 'ANIMAENGINE — ANIMAENGINE',
   description:
     'Domain-specific creative intelligence platform for lyric generation with Vocal DNA and 28-Law quality scoring.',
   keywords: ['music', 'lyrics', 'AI', 'songwriter', 'vocal DNA'],
-  authors: [{ name: 'ARE-E' }],
+  authors: [{ name: 'ANIMAENGINE' }],
   robots: 'index, follow',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'ARE-E',
-    title: 'ARE-E — Artist Reality Engine',
+    siteName: 'ANIMAENGINE',
+    title: 'ANIMAENGINE — ANIMAENGINE',
     description: 'Your lyrics sound like you. Finally.',
   },
 };

@@ -201,7 +201,7 @@ export function InteractiveDemo() {
               </span>
             </h2>
             <p style={{ fontSize: '15px', color: 'var(--text-secondary)', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
-              Choose a model scenario. ARE-E starts from Artist + Theme, expands the creative brief, streams core writing, and scores the result before final delivery.
+              Choose a model scenario. ANIMAENGINE starts from Artist + Theme, expands the creative brief, streams core writing, and scores the result before final delivery.
             </p>
           </div>
         </Reveal>

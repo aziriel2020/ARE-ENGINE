@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
   if (IS_TEST_MODE) {
     return NextResponse.json({
       data: [{
-        id: 'user_test_000', email: 'test@are-engine.io', plan: 'PRO',
+        id: 'user_test_000', email: 'test@animaengine.io', plan: 'PRO',
         createdAt: new Date().toISOString(), deletedAt: null,
       }],
       total: 1, page, limit, hasMore: false,

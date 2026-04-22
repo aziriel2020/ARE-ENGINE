@@ -3,7 +3,7 @@ import { PricingSection } from '@/components/landing/pricing-section';
 import { Footer } from '@/components/landing/footer';
 
 export const metadata = {
-  title: 'Pricing — ARE-E',
+  title: 'Pricing — ANIMAENGINE',
   description: 'Premium pricing for high-performance music generation operations.',
 };
 

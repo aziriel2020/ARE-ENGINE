@@ -42,7 +42,7 @@ export function Hero() {
             </h1>
 
             <p style={{ marginTop: '24px', fontSize: 18, lineHeight: 1.8, maxWidth: 700, color: 'var(--text-secondary)' }}>
-              Enter <strong style={{ color: 'var(--text-primary)' }}>Artist + Theme</strong>. ARE-E transforms it into a full professional package: structure, lyrics, arrangement logic, instrument direction, and execution-ready prompts.
+              Enter <strong style={{ color: 'var(--text-primary)' }}>Artist + Theme</strong>. ANIMAENGINE transforms it into a full professional package: structure, lyrics, arrangement logic, instrument direction, and execution-ready prompts.
             </p>
 
             <div style={{ display: 'flex', gap: 12, marginTop: 30, flexWrap: 'wrap' }}>

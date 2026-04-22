@@ -23,7 +23,7 @@ export default function SignInPage() {
               letterSpacing: '-0.02em',
             }}
           >
-            ARE-E
+            ANIMAENGINE
           </span>
         </div>
         <SignIn
